@@ -1,13 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
-import { Todo } from '@/app/domain/entities/todo';
+import exp from 'constants';
+import { useTodos } from '../hooks/use-todos';
 
-const fetchTodos = async (): Promise<Todo[]> => {
-    const res = await fetch('/api/todos');
-    return res.json();
-};
-
-export const TodoList = () => {
-    const { data, isLoading, error } = useQuery(['todos'], fetchTodos);
+const TodoList = () => {
+    const { data, isLoading, error } = useTodos();
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
@@ -20,3 +15,5 @@ export const TodoList = () => {
         </ul>
     );
 };
+
+export default TodoList;

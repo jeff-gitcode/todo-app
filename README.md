@@ -72,5 +72,5 @@ Next steps:
 More information in our documentation:
 https://pris.ly/d/getting-started
 
-
+$ yarn add -D @types/jest
 ````
