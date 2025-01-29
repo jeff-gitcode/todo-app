@@ -34,3 +34,26 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+# Tech Stack
+- [x] clean architecture
+- [x] nextjs
+- [x] zod
+- [x] react-query
+- [x] react-hook-form
+- [x] next-auth
+- [x] prisma
+- [x] jest/testing-library
+- [x] storybook
+- [x] playwright
+- [x] shadcn-ui
+
+
+````
+$ npx create-next-app@latest todo-app --typescript
+$ npm install -g npm@11.0.0
+$ yarn add @tanstack/react-query @tanstack/react-query-devtools zod react-hook-form next-auth @prisma/client @storybook/react @testing-library/react @testing-library/jest-dom jest playwright shadcn-ui
+$ yarn add -D prisma   
+
+````
