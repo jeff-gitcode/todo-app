@@ -1,5 +1,6 @@
-import { ITodoRepository } from '@/app/domain/repositories/itodo-repository';
-import { Todo } from '@app/domain/entities/todo';
+import { Todo } from '@/app/domain/entities/todo';
+import { ITodoRepository } from '@/app/domain/interfaces/itodo-repository';
+
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();

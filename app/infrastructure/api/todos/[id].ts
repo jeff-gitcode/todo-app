@@ -1,12 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '@prisma/client';
-import { withAuth } from '../../../middleware/withAuth';
+import prismaMock from './prisma';
+// import prisma from '@prisma/client';
+// import { withAuth } from '../../../middleware/withAuth';
 
-export default withAuth(async function handler(req: NextApiRequest, res: NextApiResponse) {
+// export default withAuth(async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { id } = req.query;
     if (req.method === 'PUT') {
         const { title, completed } = req.body;
-        const todo = await prisma.todo.update({
+        const todo = await prismaMock.todo.update({
             where: { id: Number(id) },
             data: { title, completed },
         });
@@ -16,11 +18,11 @@ export default withAuth(async function handler(req: NextApiRequest, res: NextApi
     }
 
     if (req.method === 'DELETE') {
-        await prisma.todo.delete({
+        await prismaMock.todo.delete({
             where: { id: Number(id) },
         });
         res.status(204).end();
     } else {
         res.status(405).json({ message: 'Method not allowed' });
     }
-});
+};

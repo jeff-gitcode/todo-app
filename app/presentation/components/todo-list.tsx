@@ -1,15 +1,17 @@
-import exp from 'constants';
+'use client';
+
+import { Todo } from '@/app/domain/entities/todo';
 import { useTodos } from '../hooks/use-todos';
 
 const TodoList = () => {
-    const { data, isLoading, error } = useTodos();
+    const { data: todos, isLoading, error } = useTodos();
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
 
     return (
         <ul>
-            {data.map((todo) => (
+            {(todos as Todo[])?.map((todo: Todo) => (
                 <li key={todo.id}>{todo.title}</li>
             ))}
         </ul>

@@ -72,5 +72,62 @@ Next steps:
 More information in our documentation:
 https://pris.ly/d/getting-started
 
+# JEST
 $ yarn add -D @types/jest
+$ yarn add -D  jest ts-jest @types/jest @prisma/client  
+
+# tanstack
+$ yarn add -D @tanstack/react-query-devtools
+
+# sqllite
+$ npx prisma init --datasource-provider sqlite
+
+info A prisma folder or prisma schema file already exists in the project.
+info Please manually update your .env file with the new DATABASE_URL shown below.
+
+Database URL:
+undefined
+
+Project link:
+https://console.prisma.io////dashboard
+
+Next steps
+1. Define your database schema
+Open the schema.prisma file and define your first models. Go to https://pris.ly/ppg-quickstart if you need inspiration.
+
+2. Apply migrations
+Run the following command to create and apply a migration:
+npx prisma migrate dev --name init
+
+3. Send queries with Prisma Client
+As a next step, you can instantiate Prisma Client and start sending queries to your database from your application.
+
+4. Manage your data
+View your database in Studio via Console: https://console.prisma.io////studio.
+Or run Studio locally with: npx prisma studio
+
+Find more information in our documentation:
+https://pris.ly/d/getting-started
+
+
+$ npx prisma migrate dev --name init
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+Datasource "db": SQLite database "dev.db" at "file:./dev.db"
+
+SQLite database dev.db created at file:./dev.db
+
+Applying migration `20250130122003_init`
+
+The following migration(s) have been created and applied from new schema changes:
+
+migrations/
+  └─ 20250130122003_init/
+    └─ migration.sql
+
+Your database is now in sync with your schema.
+
+$ yarn add @prisma/client
+$ npx prisma generate
 ````
