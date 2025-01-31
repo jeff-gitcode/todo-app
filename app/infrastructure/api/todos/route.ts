@@ -13,7 +13,6 @@
 
 // import prisma from '@prisma/client';
 import { PrismaClient, Todo } from '@prisma/client';
-import prismaMock from './prisma';
 import { NextResponse } from 'next/server';
 
 // export default async function handler(req: NextApiRequest, res: NextApiResponse) {
