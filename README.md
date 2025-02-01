@@ -130,4 +130,9 @@ Your database is now in sync with your schema.
 
 $ yarn add @prisma/client
 $ npx prisma generate
+
+# shadcn
+$ npx shadcn@latest init
+$ npx shadcn@latest add button input checkbox card table
+
 ````

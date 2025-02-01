@@ -26,7 +26,7 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(req: Request): Promise<Response> {
     try {
         // const response = await prismaMock.todo.findMany();
         const response: Todo[] = await prisma.todo.findMany();
