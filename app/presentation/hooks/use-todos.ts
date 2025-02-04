@@ -5,21 +5,21 @@ import { useQuery, useMutation, useQueryClient, UseQueryResult } from '@tanstack
 import { TodoFormData } from '../validation/todo-schema';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
-const API_BASE_URL = 'infrastructure/api/todos';
+const API_BASE_URL = `${API_URL}/infrastructure/api/todos`;
 
 
 
 // Fetch all todos
 const fetchTodos = async (): Promise<Todo[]> => {
   console.log('fetchTodos', API_BASE_URL);
-  const res = await fetch(`${API_URL}/${API_BASE_URL}`);
+  const res = await fetch(`${API_BASE_URL}`);
   return await res.json();
 };
 
 // Fetch a single todo by ID
 const fetchTodoById = async (id: number): Promise<Todo> => {
   console.log('fetchTodoById', API_BASE_URL);
-  const res = await fetch(`${API_URL}/${API_BASE_URL}/${id}`, {
+  const res = await fetch(`${API_BASE_URL}/${id}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -55,7 +55,7 @@ export const useCreateTodo = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (todo: TodoFormData) => {
-      const response = await fetch(API_BASE_URL, {
+      const response = await fetch(`${API_BASE_URL}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(todo),
@@ -75,7 +75,7 @@ export const useUpdateTodo = () => {
   return useMutation({
     mutationFn: async (todo: { id: number } & TodoFormData) => {
       const response = await fetch(`${API_BASE_URL}/${todo.id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(todo),
       });
@@ -99,7 +99,7 @@ export const useDeleteTodo = () => {
       if (!response.ok) throw new Error('Failed to delete todo');
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] });
+      queryClient.invalidateQueries({ queryKey: ['todos'] }); // Invalidate the cache
     },
   });
 };

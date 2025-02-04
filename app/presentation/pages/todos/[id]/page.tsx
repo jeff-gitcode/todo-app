@@ -24,13 +24,11 @@ const EditTodoPage = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Edit Todo</h1>
-            {todo && (
-                <TodoItem
-                    todo={todo}
-                    onSuccess={handleSuccess}
-                />
-            )}
+            <h1 className="text-2xl font-bold mb-4">{todo ? 'Edit Todo' : 'Create Todo'}</h1>
+            <TodoItem
+                todo={todo}
+                onSuccess={handleSuccess}
+            />
             <Button variant="outline" onClick={() => router.push('/')} className="mt-4">
                 Cancel
             </Button>

@@ -17,8 +17,7 @@ const TodoItem = ({ todo, onSuccess }: TodoItemProps) => {
         resolver: zodResolver(TodoSchema),
         defaultValues: {
             title: todo?.title || '', // Pre-fill title if editing
-        },
-        values: todo,
+        }
     });
 
     const { mutate: createTodo } = useCreateTodo();

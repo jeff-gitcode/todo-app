@@ -8,20 +8,20 @@ import { NextResponse } from 'next/server';
 const prisma = new PrismaClient();
 
 // delete todo
-export async function DELETE(req: Request,
-    { params }: { params: { id: string } }): Promise<Response> {
-    try {
-        console.log(params);
-        const { id } = await params;
-        await prisma.todo.delete({
-            where: { id: Number(id) },
-        });
-        return NextResponse.json({}, { status: 204 });
-    } catch (e: unknown) {
-        console.error(e);
-        return NextResponse.json({ error: (e as Error).message }, { status: 500 });
-    }
-}
+// export async function DELETE(req: Request,
+//     { params }: { params: { id: string } }): Promise<Response> {
+//     try {
+//         console.log(params);
+//         const { id } = await params;
+//         await prisma.todo.delete({
+//             where: { id: Number(id) },
+//         });
+//         return NextResponse.json({}, { status: 204 });
+//     } catch (e: unknown) {
+//         console.error(e);
+//         return NextResponse.json({ error: (e as Error).message }, { status: 500 });
+//     }
+// }
 
 // update todo
 export async function PUT(req: Request,
@@ -70,6 +70,28 @@ export async function GET(req: Request,
             where: { id: Number(id) },
         });
         return NextResponse.json(todo);
+    } catch (e: unknown) {
+        console.error(e);
+        return NextResponse.json({ error: (e as Error).message }, { status: 500 });
+    }
+}
+
+// Delete a todo by ID
+export async function DELETE(req: Request,
+    { params }: { params: { id: string } }): Promise<Response> {
+    try {
+        const { id } = await params;
+        await prisma.todo.delete({
+            where: { id: Number(id) },
+        });
+        return new NextResponse(null, { status: 204 });
+        // return NextResponse.json(
+        //     {
+        //         message: 'Item deleted successfully',
+        //         deletedItem
+        //     },
+        //     { status: 200 }
+        // );
     } catch (e: unknown) {
         console.error(e);
         return NextResponse.json({ error: (e as Error).message }, { status: 500 });

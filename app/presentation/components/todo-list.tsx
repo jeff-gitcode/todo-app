@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Pencil } from 'lucide-react';
+import { Pencil, Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,13 +10,19 @@ import React from 'react';
 
 import { Todo } from '@/app/domain/entities/todo';
 import { useTodos, useDeleteTodo } from '../hooks/use-todos';
+import { useRouter } from 'next/navigation';
 
 const TodoList = () => {
+  const router = useRouter();
   const { data: todos, isLoading, error } = useTodos();
-  const deleteTodo = useDeleteTodo();
+  const { mutate: deleteTodo } = useDeleteTodo();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+
+  const handleSuccess = () => {
+    router.push('/'); // Redirect to the home page after successful update
+  };
 
   return (
     <Card>
@@ -24,6 +30,9 @@ const TodoList = () => {
         <CardTitle>Todo List</CardTitle>
       </CardHeader>
       <CardContent>
+        <Link href={`/presentation/pages/todos/0`} passHref>
+          <Button variant="outline">New</Button>
+        </Link>
         <Table>
           <TableHeader>
             <TableRow>
@@ -44,7 +53,7 @@ const TodoList = () => {
                   <Button
                     variant="destructive"
                     size="sm"
-                    onClick={() => deleteTodo.mutate(todo.id)}
+                    onClick={() => deleteTodo(todo.id, { onSuccess: handleSuccess })}
                   >
                     Delete
                   </Button>
