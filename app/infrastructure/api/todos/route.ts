@@ -12,7 +12,9 @@
 // }
 
 // import prisma from '@prisma/client';
+import { TodoSchema } from '@/app/domain/validation/todo-schema';
 import { PrismaClient, Todo } from '@prisma/client';
+import { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 
 // export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -26,12 +28,35 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function GET(req: Request): Promise<Response> {
+export async function GET(): Promise<Response> {
     try {
         // const response = await prismaMock.todo.findMany();
         const response: Todo[] = await prisma.todo.findMany();
         console.log(response);
         return NextResponse.json(response);
+    } catch (e: unknown) {
+        console.error(e);
+        return NextResponse.json({ error: (e as Error).message }, { status: 500 });
+    }
+}
+
+// create a new todo
+export async function POST(req: Request): Promise<Response> {
+    try {
+        const payload = await req.json();
+        console.log(payload);
+
+        const validation = TodoSchema.safeParse(payload);
+
+        if (!validation.success) {
+            return NextResponse.json({ errors: validation.error.errors }, { status: 400 });
+        }
+
+        const { title } = payload;
+        const todo = await prisma.todo.create({
+            data: { title, completed: false },
+        });
+        return NextResponse.json(todo, { status: 201 });
     } catch (e: unknown) {
         console.error(e);
         return NextResponse.json({ error: (e as Error).message }, { status: 500 });

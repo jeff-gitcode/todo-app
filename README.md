@@ -133,6 +133,6 @@ $ npx prisma generate
 
 # shadcn
 $ npx shadcn@latest init
-$ npx shadcn@latest add button input checkbox card table
+$ npx shadcn@latest add button input checkbox card table form
 
 ````
