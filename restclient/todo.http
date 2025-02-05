@@ -1,5 +1,23 @@
 @host=http://localhost:3000
 
+### signup a user
+POST {{host}}/infrastructure/api/auth/signup HTTP/1.1
+content-type: application/json
+
+{
+  "name": "user1",
+  "email": "test",
+  "password": "test"
+}
+
+### login a user
+POST {{host}}/infrastructure/api/auth/login HTTP/1.1
+content-type: application/json
+
+{
+  "email": "test",
+  "password": "test"
+}
 
 ### GET todo records
 GET {{host}}/infrastructure/api/todos HTTP/1.1
