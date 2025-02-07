@@ -1,10 +1,13 @@
 // import { useAuth } from '../hooks/useAuth';
+import { useSession } from 'next-auth/react';
 import TodoList from '../components/todo-list';
 
 export default function DashBoard() {
-    // const { user } = useAuth();
+    // const { data: session } = useSession();
 
-    // if (!user) return <div>Please log in to view todos.</div>;
+    // if (!session) {
+    //     return <p>You are not authenticated</p>;
+    // }
 
     return (
         <div>

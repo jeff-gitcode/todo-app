@@ -16,6 +16,8 @@ import { TodoSchema } from '@/app/domain/validation/todo-schema';
 import { PrismaClient, Todo } from '@prisma/client';
 import { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
+import { PrismaTodoRepository } from '../../database/prisma-todo-repository';
+import { CreateTodo } from '@/app/application/use-cases/create-todo';
 
 // export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 //     // if (req.method !== "GET") {
@@ -53,9 +55,14 @@ export async function POST(req: Request): Promise<Response> {
         }
 
         const { title } = payload;
-        const todo = await prisma.todo.create({
-            data: { title, completed: false },
-        });
+
+        const repository = new PrismaTodoRepository();
+        const createTodo = new CreateTodo(repository);
+        const todo = await createTodo.execute({ title, completed: false });
+
+        // const todo = await prisma.todo.create({
+        //     data: { title, completed: false },
+        // });
         return NextResponse.json(todo, { status: 201 });
     } catch (e: unknown) {
         console.error(e);

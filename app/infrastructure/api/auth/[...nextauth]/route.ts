@@ -1,3 +1,8 @@
+import { handlers } from "@/app/infrastructure/utils/auth"
+
+// Referring to the auth.ts we just created
+export const { GET, POST } = handlers;
+
 // import NextAuth, { NextAuthOptions } from "next-auth";
 // import { PrismaAdapter } from "@next-auth/prisma-adapter";
 // import { PrismaClient } from "@prisma/client";
