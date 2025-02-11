@@ -13,13 +13,11 @@ export async function login({ email, password }: CredentialsType, callbackUrl: s
         console.log(email, password, callbackUrl);
 
         // Call signIn with the callbackUrl
-        const result = await signIn("credentials", { email, password, redirectTo: callbackUrl });
+        await signIn("credentials", { email, password, redirect: false });
 
-        console.log(result);
-
-        return result;
     } catch (error) {
-        console.log("************************Login***********************");
+        console.log("************************Login Failed***********************");
+        console.log('error', error);
         if (error instanceof AuthError) {
             switch (error.type) {
                 case 'CredentialsSignin':

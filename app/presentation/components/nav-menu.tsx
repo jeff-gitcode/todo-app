@@ -14,6 +14,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 export default function NavMenu() {
     const { data: session } = useSession();
+    console.log("************************NavMenu***********************");
+    console.log(session);
 
     return (
         <NavigationMenu className="border-b p-4">

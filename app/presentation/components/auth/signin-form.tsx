@@ -29,7 +29,7 @@ export default function SignInForm() {
         //     redirectTo: "/",
         // });
 
-        await login({ email: data.email, password: data.password }, "/presentation/pages/todos");
+        await login({ email: data.email, password: data.password }, "/");
 
 
 

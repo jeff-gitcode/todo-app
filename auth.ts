@@ -20,7 +20,6 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                     where: { email: credentials?.email as string },
                 })
 
-                console.log(user);
 
                 if (!user) {
                     console.log('User not found');
@@ -30,12 +29,15 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 const { password } = credentials;
                 const passwordsMatch = await bcrypt.compare(password as string, user.password);
 
+                console.log(passwordsMatch);
+
                 if (!passwordsMatch) {
                     console.log(user.password, credentials?.password);
                     console.log('Invalid credentials - paassword');
                     return null;
                 }
 
+                console.log('user', user);
                 return user;
                 // if (parsedCredentials.success) {
                 //     const { email, password } = parsedCredentials.data;
