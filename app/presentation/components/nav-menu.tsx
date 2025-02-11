@@ -23,7 +23,7 @@ export default function NavMenu() {
                 {session ? (
                     <>
                         <NavigationMenuItem>
-                            <Link href="/" legacyBehavior passHref>
+                            <Link href="/presentation/pages/protected/todos" legacyBehavior passHref>
                                 <NavigationMenuLink className="hover:underline">Home</NavigationMenuLink>
                             </Link>
                         </NavigationMenuItem>

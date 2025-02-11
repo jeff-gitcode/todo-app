@@ -13,7 +13,8 @@ export async function login({ email, password }: CredentialsType, callbackUrl: s
         console.log(email, password, callbackUrl);
 
         // Call signIn with the callbackUrl
-        await signIn("credentials", { email, password, redirect: false });
+        const result = await signIn("credentials", { email, password, redirect: false });
+        return result;
 
     } catch (error) {
         console.log("************************Login Failed***********************");
