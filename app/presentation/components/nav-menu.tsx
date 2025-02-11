@@ -11,11 +11,27 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { redirect } from "next/navigation";
 
 export default function NavMenu() {
     const { data: session } = useSession();
     console.log("************************NavMenu***********************");
     console.log(session);
+
+    const handleSignOut = async () => {
+        try {
+            await signOut({ redirect: false })
+
+        } catch (err) {
+            if (isRedirectError(err)) {
+                console.error(err);
+                throw err;
+            }
+        } finally {
+            redirect("/");
+        }
+    };
 
     return (
         <NavigationMenu className="border-b p-4">
@@ -28,15 +44,15 @@ export default function NavMenu() {
                             </Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <Button variant="ghost" onClick={() => signOut()}>
+                            <Button variant="ghost" onClick={handleSignOut}>
                                 Sign Out
                             </Button>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
                             <Avatar>
-                                <AvatarImage src={session.user?.image || ""} />
+                                <AvatarImage src={session.user?.name || ""} />
                                 <AvatarFallback>
-                                    {session.user?.name?.charAt(0) || "U"}
+                                    {session.user?.name || "U"}
                                 </AvatarFallback>
                             </Avatar>
                         </NavigationMenuItem>

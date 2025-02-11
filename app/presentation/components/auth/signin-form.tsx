@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 // src/presentation/pages/auth/signin.tsx
 import { useForm } from "react-hook-form";
@@ -9,6 +9,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { SignInFormValues, signInSchema } from "@/app/presentation/validation/auth-schema";
 import { login } from "@/app/(infrastructure)/services/auth-service";
+import { AuthError } from "next-auth";
+import { redirect } from "next/navigation";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 export default function SignInForm() {
     const form = useForm<SignInFormValues>({
@@ -19,7 +22,6 @@ export default function SignInForm() {
         },
     });
 
-    // const router = useRouter();
 
     const onSubmit = async (data: SignInFormValues) => {
         // "use server";
@@ -29,8 +31,45 @@ export default function SignInForm() {
         //     redirectTo: "/",
         // });
 
-        await login({ email: data.email, password: data.password }, "/");
+        try {
+            const result = await login({ email: data.email, password: data.password }, "/");
 
+            if (result?.error) {
+                console.log("************************SignInForm***********************");
+                console.log(result.error);
+            }
+
+            if (result?.ok) {
+                console.log("************************SignInForm***********************");
+                console.log("Login successful");
+                redirect("/");
+                // router.push(`/?refreshId=${new Date().getTime()}`);
+            }
+
+        } catch (error) {
+            if (isRedirectError(error)) {
+                console.error(error);
+                throw error;
+            }
+            console.log("************************SignInForm***********************");
+            if (error instanceof AuthError) {
+                switch (error.type) {
+                    case 'CredentialsSignin':
+                        return {
+                            error: 'Invalid credentials',
+                        };
+                    default:
+                        return {
+                            error: 'Something went wrong.',
+                        };
+                }
+                throw error;
+            }
+        } finally {
+            console.log("************************SignInForm***********************");
+            console.log("Login failed");
+            redirect("/");
+        }
 
 
         // if (result) {

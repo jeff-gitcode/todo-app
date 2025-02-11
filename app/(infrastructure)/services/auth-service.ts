@@ -2,6 +2,7 @@
 
 import { signIn, signOut } from '@/auth';
 import { AuthError } from 'next-auth';
+import { redirect } from 'next/navigation'
 
 type CredentialsType = {
     email: string;
@@ -13,8 +14,12 @@ export async function login({ email, password }: CredentialsType, callbackUrl: s
         console.log(email, password, callbackUrl);
 
         // Call signIn with the callbackUrl
-        const result = await signIn("credentials", { email, password, redirect: false });
-        return result;
+        await signIn("credentials", { email, password, redirect: false });
+
+        return { ok: true };
+        // console.log("************************Login function***********************");
+        // console.log(result);
+        // return result;
 
     } catch (error) {
         console.log("************************Login Failed***********************");
@@ -23,11 +28,11 @@ export async function login({ email, password }: CredentialsType, callbackUrl: s
             switch (error.type) {
                 case 'CredentialsSignin':
                     return {
-                        message: 'Invalid credentials',
+                        error: 'Invalid credentials',
                     };
                 default:
                     return {
-                        message: 'Something went wrong.',
+                        error: 'Something went wrong.',
                     };
             }
             throw error;
