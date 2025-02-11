@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { CreateTodo } from '@/app/application/use-cases/create-todo';
-import { PrismaTodoRepository } from '@/app/infrastructure/database/prisma-todo-repository';
+import { PrismaTodoRepository } from '@/app/(infrastructure)/database/prisma-todo-repository';
 import { TodoSchema } from '@/app/domain/validation/todo-schema';
 
 //  create a new todo

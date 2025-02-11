@@ -8,7 +8,7 @@ export function SessionProvider({
     children: React.ReactNode
 }) {
     return (
-        <NextAuthSessionProvider basePath="/infrastructure/api/auth">
+        <NextAuthSessionProvider>
             {children}
         </NextAuthSessionProvider>
     )
