@@ -15,7 +15,7 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { redirect } from "next/navigation";
 
 export default function NavMenu() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     console.log("************************NavMenu***********************");
     console.log(session);
 
@@ -36,7 +36,7 @@ export default function NavMenu() {
     return (
         <NavigationMenu className="border-b p-4">
             <NavigationMenuList className="gap-4">
-                {session ? (
+                {status === 'authenticated' ? (
                     <>
                         <NavigationMenuItem>
                             <Link href="/presentation/pages/protected/todos" legacyBehavior passHref>

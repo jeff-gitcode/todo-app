@@ -12,6 +12,7 @@ import { login } from "@/app/(infrastructure)/services/auth-service";
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { FormEvent } from "react";
 
 export default function SignInForm() {
     const form = useForm<SignInFormValues>({
@@ -66,9 +67,8 @@ export default function SignInForm() {
                 throw error;
             }
         } finally {
-            console.log("************************SignInForm***********************");
-            console.log("Login failed");
-            redirect("/");
+            console.log("************************SignInForm Finally***********************");
+            redirect("/presentation/pages/protected");
         }
 
 
@@ -79,6 +79,11 @@ export default function SignInForm() {
         // }
     };
 
+    function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+        event.preventDefault();
+        form.handleSubmit(onSubmit)();
+    }
+
     return (
         <div className="flex items-center justify-center min-h-screen">
             <Card className="w-full max-w-md">
@@ -87,7 +92,7 @@ export default function SignInForm() {
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                        <form onSubmit={handleSubmit} className="space-y-6">
                             <FormField
                                 control={form.control}
                                 name="email"

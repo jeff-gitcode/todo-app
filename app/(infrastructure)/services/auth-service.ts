@@ -2,7 +2,6 @@
 
 import { signIn, signOut } from '@/auth';
 import { AuthError } from 'next-auth';
-import { redirect } from 'next/navigation'
 
 type CredentialsType = {
     email: string;
@@ -14,7 +13,9 @@ export async function login({ email, password }: CredentialsType, callbackUrl: s
         console.log(email, password, callbackUrl);
 
         // Call signIn with the callbackUrl
-        await signIn("credentials", { email, password, redirect: false });
+        const result = await signIn("credentials", { email, password, redirect: false });
+        console.log("************************Login function***********************");
+        console.log(result);
 
         return { ok: true };
         // console.log("************************Login function***********************");
