@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import getServerSession from "next-auth"
 import { Providers } from "./providers";
+import { SessionProvider } from "./session-provider";
 import NavMeu from './presentation/components/nav-menu';
 
 import "./globals.css";
@@ -25,16 +27,19 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
-          <div>
-            <NavMeu />
-          </div>
-          {children}</Providers>
+        <SessionProvider>
+          <Providers>
+            <div>
+              <NavMeu />
+            </div>
+            {children}</Providers>
+        </SessionProvider>
       </body>
     </html>
   );
