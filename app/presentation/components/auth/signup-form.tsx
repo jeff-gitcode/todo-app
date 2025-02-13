@@ -7,59 +7,41 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { SignInFormValues, signInSchema } from "@/app/presentation/validation/auth-schema";
-import { login } from "@/app/(infrastructure)/services/auth-service";
+import { SignInFormValues, signInSchema, SignUpFormValues, signUpSchema } from "@/app/presentation/validation/auth-schema";
+import { login, register } from "@/app/(infrastructure)/services/auth-service";
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { FormEvent } from "react";
 import { signIn } from "next-auth/react";
 
-export default function SignInForm() {
-    const form = useForm<SignInFormValues>({
-        resolver: zodResolver(signInSchema),
+export default function SignUpForm() {
+    const form = useForm<SignUpFormValues>({
+        resolver: zodResolver(signUpSchema),
         defaultValues: {
+            name: "",
             email: "",
             password: "",
+            passwordConfirmation: "",
         },
     });
 
 
-    const onSubmit = async (data: SignInFormValues) => {
-        // "use server";
-        // const result = await signIn("credentials", {
-        //     email: data.email,
-        //     password: data.password,
-        //     redirectTo: "/",
-        // });
+    const onSubmit = async (data: SignUpFormValues) => {
 
         try {
-            const result = await signIn("credentials", {
-                email: data.email,
-                password: data.password,
-                redirect: false,
-            });
-
-            // const result = await login({ email: data.email, password: data.password }, "/");
+            const result = await register(data);
 
             if (result?.error) {
-                console.log("************************SignInForm***********************");
+                console.log("************************SignUpForm***********************");
                 console.log(result.error);
-                redirect("/presentation/pages/auth/signup");
-            } else {
-                console.log("************************SignInForm***********************");
-                console.log("Login successful");
-                redirect("/");
             }
 
-
-            // if (result?.ok) {
-            //     console.log("************************SignInForm***********************");
-            //     console.log("Login successful");
-            //     redirect("/");
-            //     // router.push(`/?refreshId=${new Date().getTime()}`);
-            // }
-
+            if (result?.success) {
+                console.log("************************SignUpForm***********************");
+                console.log("Registration successful");
+                redirect("/presentation/pages/auth/signin");
+            }
         } catch (error) {
             if (isRedirectError(error)) {
                 console.error(error);
@@ -79,18 +61,11 @@ export default function SignInForm() {
                 }
                 throw error;
             }
+        } finally {
+            console.log("************************SignInForm Finally***********************");
+            redirect("/");
         }
-        // finally {
-        //     console.log("************************SignInForm Finally***********************");
-        //     redirect("/");
-        // }
 
-
-        // if (result) {
-        //     alert(result.error);
-        // } else {
-        //     router.push("/presentation/pages/todos");
-        // }
     };
 
     function handleSubmit(event: FormEvent<HTMLFormElement>): void {
@@ -107,6 +82,19 @@ export default function SignInForm() {
                 <CardContent>
                     <Form {...form}>
                         <form onSubmit={handleSubmit} className="space-y-6">
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Name</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Name" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <FormField
                                 control={form.control}
                                 name="email"
@@ -133,8 +121,21 @@ export default function SignInForm() {
                                     </FormItem>
                                 )}
                             />
+                            <FormField
+                                control={form.control}
+                                name="passwordConfirmation"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Password Confirmation</FormLabel>
+                                        <FormControl>
+                                            <Input type="password" placeholder="Password Confirmation" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <Button type="submit" className="w-full">
-                                Sign In
+                                Sign Up
                             </Button>
                         </form>
                     </Form>
