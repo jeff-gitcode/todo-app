@@ -13,6 +13,7 @@ import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { FormEvent } from "react";
+import { signIn } from "next-auth/react";
 
 export default function SignInForm() {
     const form = useForm<SignInFormValues>({
@@ -33,19 +34,25 @@ export default function SignInForm() {
         // });
 
         try {
-            const result = await login({ email: data.email, password: data.password }, "/");
+            await signIn("credentials", {
+                email: data.email,
+                password: data.password,
+                redirect: false,
+            });
 
-            if (result?.error) {
-                console.log("************************SignInForm***********************");
-                console.log(result.error);
-            }
+            // const result = await login({ email: data.email, password: data.password }, "/");
 
-            if (result?.ok) {
-                console.log("************************SignInForm***********************");
-                console.log("Login successful");
-                redirect("/");
-                // router.push(`/?refreshId=${new Date().getTime()}`);
-            }
+            // if (result?.error) {
+            //     console.log("************************SignInForm***********************");
+            //     console.log(result.error);
+            // }
+
+            // if (result?.ok) {
+            //     console.log("************************SignInForm***********************");
+            //     console.log("Login successful");
+            //     redirect("/");
+            //     // router.push(`/?refreshId=${new Date().getTime()}`);
+            // }
 
         } catch (error) {
             if (isRedirectError(error)) {
@@ -68,7 +75,7 @@ export default function SignInForm() {
             }
         } finally {
             console.log("************************SignInForm Finally***********************");
-            redirect("/presentation/pages/protected");
+            redirect("/");
         }
 
 
