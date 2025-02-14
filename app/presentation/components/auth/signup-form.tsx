@@ -77,7 +77,7 @@ export default function SignUpForm() {
         <div className="flex items-center justify-center min-h-screen">
             <Card className="w-full max-w-md">
                 <CardHeader>
-                    <CardTitle className="text-center">Sign In</CardTitle>
+                    <CardTitle className="text-center">Sign Up</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>

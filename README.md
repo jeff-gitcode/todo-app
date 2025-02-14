@@ -2,6 +2,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+![alt text](./doc/nextjs-demo.gif)
+
 First, run the development server:
 
 ```bash
@@ -48,7 +50,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - [x] storybook
 - [x] playwright
 - [x] shadcn-ui
-
+- [x] sqllite
 
 ````
 $ npx create-next-app@latest todo-app --typescript

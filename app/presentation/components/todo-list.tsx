@@ -30,7 +30,7 @@ const TodoList = () => {
         <CardTitle>Todo List</CardTitle>
       </CardHeader>
       <CardContent>
-        <Link href={`/presentation/pages/todos/0`} passHref>
+        <Link href={`/presentation/pages/protected/todos/0`} passHref>
           <Button variant="outline">New</Button>
         </Link>
         <Table>
@@ -45,7 +45,7 @@ const TodoList = () => {
               <TableRow key={todo.id}>
                 <TableCell>{todo.title}</TableCell>
                 <TableCell>
-                  <Link href={`/presentation/pages/todos/${todo.id}`} passHref>
+                  <Link href={`/presentation/pages/protected/todos/${todo.id}`} passHref>
                     <Button variant="ghost" size="sm">
                       <Pencil className="h-4 w-4" />
                     </Button>
