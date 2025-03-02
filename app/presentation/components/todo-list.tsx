@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { Pencil, Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -47,7 +46,8 @@ const TodoList = () => {
                 <TableCell>
                   <Link href={`/presentation/pages/protected/todos/${todo.id}`} passHref>
                     <Button variant="ghost" size="sm">
-                      <Pencil className="h-4 w-4" />
+                      Edit
+                      {/* <Pencil className="h-4 w-4" /> */}
                     </Button>
                   </Link>
                   <Button

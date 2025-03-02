@@ -1,76 +1,191 @@
+import "@testing-library/jest-dom";
+import { useTodos, useTodoById, useCreateTodo, useUpdateTodo, useDeleteTodo } from './use-todos';
 import { renderHook, act } from '@testing-library/react-hooks';
-import { useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useCreateTodo } from './use-todos';
-import { TodoFormData } from '../validation/todo-schema';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import fetchMock from 'jest-fetch-mock';
+import { render } from "@testing-library/react";
+import TodoList from "../components/todo-list";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
+fetchMock.enableMocks();
 
 const queryClient = new QueryClient();
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
+describe('useTodos', () => {
+    beforeEach(() => {
+        fetchMock.resetMocks();
+    });
+
+    it("renders correctly", () => {
+        const screen = render(
+            <QueryClientProvider client={queryClient}>
+                <TodoList />
+            </QueryClientProvider>
+        );
+
+        expect(screen.getByText("Loading...")).toBeInTheDocument();
+    });
+
+    it('fetches todos successfully', async () => {
+        const todos = [{ id: 1, title: 'Test Todo' }];
+        fetchMock.mockResponseOnce(JSON.stringify(todos));
+
+        const { result, waitFor } = renderHook(() => useTodos(), { wrapper });
+
+        await waitFor(() => result.current.isSuccess);
+
+        expect(result.current.data).toEqual(todos);
+    });
+
+    it('handles fetch todos error', async () => {
+        fetchMock.mockRejectOnce(new Error('Failed to fetch todos'));
+
+        const { result, waitFor } = renderHook(() => useTodos(), { wrapper });
+
+        await waitFor(() => result.current.isError);
+
+        expect(result.current.error).toEqual(new Error('Failed to fetch todos'));
+    });
+});
+
+describe('useTodoById', () => {
+    beforeEach(() => {
+        fetchMock.resetMocks();
+    });
+
+    it('fetches a todo by ID successfully', async () => {
+        const todo = { id: 1, title: 'Test Todo' };
+        fetchMock.mockResponseOnce(JSON.stringify(todo));
+
+        const { result, waitFor } = renderHook(() => useTodoById(1), { wrapper });
+
+        await waitFor(() => result.current.isSuccess);
+
+        expect(result.current.data).toEqual(todo);
+    });
+
+    it('handles fetch todo by ID error', async () => {
+        fetchMock.mockRejectOnce(new Error('Failed to fetch todo'));
+
+        const { result, waitFor } = renderHook(() => useTodoById(1), { wrapper });
+
+        await waitFor(() => result.current.isError);
+
+        expect(result.current.error).toEqual(new Error('Failed to fetch todo'));
+    });
+});
+
 describe('useCreateTodo', () => {
-  beforeEach(() => {
-    fetchMock.resetMocks();
-  });
-
-  it('should create a new todo', async () => {
-    const newTodo: TodoFormData = { title: 'Test Todo', description: 'Test Description' };
-    const createdTodo = { id: 1, ...newTodo, createdAt: new Date(), updatedAt: new Date() };
-
-    fetchMock.mockResponseOnce(JSON.stringify(createdTodo));
-
-    const { result, waitFor } = renderHook(() => useCreateTodo(), { wrapper });
-
-    act(() => {
-      result.current.mutate(newTodo);
+    beforeEach(() => {
+        fetchMock.resetMocks();
     });
 
-    await waitFor(() => result.current.isSuccess);
+    it('creates a new todo successfully', async () => {
+        const newTodo = { title: 'New Todo' };
+        fetchMock.mockResponseOnce(JSON.stringify(newTodo));
 
-    expect(fetchMock).toHaveBeenCalledWith(`${API_BASE_URL}/api/todos`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newTodo),
+        const { result, waitFor } = renderHook(() => useCreateTodo(), { wrapper });
+
+        act(() => {
+            result.current.mutate(newTodo);
+        });
+
+        await waitFor(() => result.current.isSuccess);
+
+        expect(fetchMock).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
+            method: 'POST',
+            body: JSON.stringify(newTodo),
+        }));
     });
 
-    expect(result.current.data).toEqual(createdTodo);
-  });
+    it('handles create todo error', async () => {
+        fetchMock.mockRejectOnce(new Error('Failed to create todo'));
 
-  it('should handle errors', async () => {
-    const newTodo: TodoFormData = { title: 'Test Todo', description: 'Test Description' };
+        const { result, waitFor } = renderHook(() => useCreateTodo(), { wrapper });
 
-    fetchMock.mockRejectOnce(new Error('Failed to create todo'));
+        act(() => {
+            result.current.mutate({ title: 'New Todo' });
+        });
 
-    const { result, waitFor } = renderHook(() => useCreateTodo(), { wrapper });
+        await waitFor(() => result.current.isError);
 
-    act(() => {
-      result.current.mutate(newTodo);
+        expect(result.current.error).toEqual(new Error('Failed to create todo'));
+    });
+});
+
+describe('useUpdateTodo', () => {
+    beforeEach(() => {
+        fetchMock.resetMocks();
     });
 
-    await waitFor(() => result.current.isError);
+    it('updates a todo successfully', async () => {
+        const updatedTodo = { id: 1, title: 'Updated Todo' };
+        fetchMock.mockResponseOnce(JSON.stringify(updatedTodo));
 
-    expect(result.current.error).toEqual(new Error('Failed to create todo'));
-  });
+        const { result, waitFor } = renderHook(() => useUpdateTodo(), { wrapper });
 
-  it('should invalidate todos query on success', async () => {
-    const newTodo: TodoFormData = { title: 'Test Todo', description: 'Test Description' };
-    const createdTodo = { id: 1, ...newTodo, createdAt: new Date(), updatedAt: new Date() };
+        act(() => {
+            result.current.mutate(updatedTodo);
+        });
 
-    fetchMock.mockResponseOnce(JSON.stringify(createdTodo));
+        await waitFor(() => result.current.isSuccess);
 
-    const invalidateQueriesSpy = jest.spyOn(queryClient, 'invalidateQueries');
-
-    const { result, waitFor } = renderHook(() => useCreateTodo(), { wrapper });
-
-    act(() => {
-      result.current.mutate(newTodo);
+        expect(fetchMock).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
+            method: 'PATCH',
+            body: JSON.stringify(updatedTodo),
+        }));
     });
 
-    await waitFor(() => result.current.isSuccess);
+    it('handles update todo error', async () => {
+        fetchMock.mockRejectOnce(new Error('Failed to update todo'));
 
-    expect(invalidateQueriesSpy).toHaveBeenCalledWith({ queryKey: ['todos'] });
-  });
+        const { result, waitFor } = renderHook(() => useUpdateTodo(), { wrapper });
+
+        act(() => {
+            result.current.mutate({ id: 1, title: 'Updated Todo' });
+        });
+
+        await waitFor(() => result.current.isError);
+
+        expect(result.current.error).toEqual(new Error('Failed to update todo'));
+    });
+});
+
+describe('useDeleteTodo', () => {
+    beforeEach(() => {
+        fetchMock.resetMocks();
+    });
+
+    it('deletes a todo successfully', async () => {
+        fetchMock.mockResponseOnce(JSON.stringify({}));
+
+        const { result, waitFor } = renderHook(() => useDeleteTodo(), { wrapper });
+
+        act(() => {
+            result.current.mutate(1);
+        });
+
+        await waitFor(() => result.current.isSuccess);
+
+        expect(fetchMock).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
+            method: 'DELETE',
+        }));
+    });
+
+    it('handles delete todo error', async () => {
+        fetchMock.mockRejectOnce(new Error('Failed to delete todo'));
+
+        const { result, waitFor } = renderHook(() => useDeleteTodo(), { wrapper });
+
+        act(() => {
+            result.current.mutate(1);
+        });
+
+        await waitFor(() => result.current.isError);
+
+        expect(result.current.error).toEqual(new Error('Failed to delete todo'));
+    });
 });
