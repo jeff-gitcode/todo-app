@@ -53,7 +53,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - [x] sqllite
 
 ````
-$ npx create-next-app@latest todo-app --typescript
+$ npx create-next-app@latest todo-app with-jest with-jest-app --typescript
 $ npm install -g npm@11.0.0
 $ yarn add @tanstack/react-query @tanstack/react-query-devtools zod react-hook-form next-auth @prisma/client @storybook/react @testing-library/react @testing-library/jest-dom jest playwright shadcn-ui
 $ yarn add -D prisma   
@@ -77,6 +77,9 @@ https://pris.ly/d/getting-started
 # JEST
 $ yarn add -D @types/jest
 $ yarn add -D  jest ts-jest @types/jest @prisma/client  
+$ yarn add --dev @testing-library/jest-dom
+$ yarn create jest@latest
+$ yarn add -D jest jest-environment-jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom ts-node
 
 # tanstack
 $ yarn add -D @tanstack/react-query-devtools
