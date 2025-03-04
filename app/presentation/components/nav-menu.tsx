@@ -22,8 +22,11 @@ export default function NavMenu() {
     const handleSignOut = async () => {
         try {
             await signOut({ redirect: false })
-
+            console.log("************************NavMenu***********************");
+            console.log("Sign Out");
         } catch (err) {
+            console.log("************************NavMenu***********************");
+            console.log(err);
             if (isRedirectError(err)) {
                 console.error(err);
                 throw err;

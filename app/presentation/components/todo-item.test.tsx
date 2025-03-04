@@ -28,7 +28,7 @@ describe('TodoForm', () => {
 
     it('renders the form with default values when no todo is provided', () => {
         const screen = render(<TodoForm onSuccess={mockOnSuccess} />);
-        screen.debug();
+        // screen.debug();
         // Check if the form is rendered with the correct placeholder
         expect(screen.getByPlaceholderText('Enter a todo')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Create Todo' })).toBeInTheDocument();
@@ -36,7 +36,7 @@ describe('TodoForm', () => {
 
     it('renders the form with pre-filled values when a todo is provided', () => {
         const todo = { id: 1, title: 'Existing Todo' };
-        const screen  = render(<TodoForm todo={todo} onSuccess={mockOnSuccess} />);
+        const screen = render(<TodoForm todo={todo} onSuccess={mockOnSuccess} />);
 
         // Check if the form is pre-filled with the existing todo title
         expect(screen.getByDisplayValue('Existing Todo')).toBeInTheDocument();
@@ -47,7 +47,7 @@ describe('TodoForm', () => {
         const createTodoMutate = jest.fn();
         mockUseCreateTodo.mockReturnValue({ mutate: createTodoMutate });
 
-        const screen  = render(<TodoForm onSuccess={mockOnSuccess} />);
+        const screen = render(<TodoForm onSuccess={mockOnSuccess} />);
 
         // Simulate user input
         fireEvent.change(screen.getByPlaceholderText('Enter a todo'), {
@@ -71,7 +71,7 @@ describe('TodoForm', () => {
         mockUseUpdateTodo.mockReturnValue({ mutate: updateTodoMutate });
 
         const todo = { id: 1, title: 'Existing Todo' };
-        const screen  = render(<TodoForm todo={todo} onSuccess={mockOnSuccess} />);
+        const screen = render(<TodoForm todo={todo} onSuccess={mockOnSuccess} />);
 
         // Simulate user input
         fireEvent.change(screen.getByPlaceholderText('Enter a todo'), {
@@ -91,7 +91,7 @@ describe('TodoForm', () => {
     });
 
     it('shows validation error when the form is submitted with an empty title', async () => {
-        const screen  = render(<TodoForm onSuccess={mockOnSuccess} />);
+        const screen = render(<TodoForm onSuccess={mockOnSuccess} />);
 
         // Simulate form submission without entering a title
         fireEvent.click(screen.getByRole('button', { name: 'Create Todo' }));
