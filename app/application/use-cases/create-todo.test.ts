@@ -1,6 +1,5 @@
 import { CreateTodo } from './create-todo';
 import { ITodoRepository } from '@/app/domain/interfaces/itodo-repository';
-import { Todo } from '@/app/domain/entities/todo';
 
 // app/application/use-cases/create-todo.test.ts
 
@@ -16,8 +15,8 @@ describe('CreateTodo', () => {
     });
 
     it('should call createTodo with correct parameters', async () => {
-        const todoData = { title: 'Test Todo', description: 'Test Description' };
-        const createdTodo = { ...todoData, id: '1', createdAt: new Date(), updatedAt: new Date() };
+        const todoData = { title: 'Test Todo', description: 'Test Description', completed: false };
+        const createdTodo = { ...todoData, id: 1, createdAt: new Date(), updatedAt: new Date(), completed: false };
         todoRepository.createTodo.mockResolvedValue(createdTodo);
 
         await createTodo.execute(todoData);
@@ -26,8 +25,8 @@ describe('CreateTodo', () => {
     });
 
     it('should return the created todo', async () => {
-        const todoData = { title: 'Test Todo', description: 'Test Description' };
-        const createdTodo = { ...todoData, id: '1', createdAt: new Date(), updatedAt: new Date() };
+        const todoData = { title: 'Test Todo', description: 'Test Description', completed: false };
+        const createdTodo = { ...todoData, id: 1, createdAt: new Date(), updatedAt: new Date(), completed: false };
         todoRepository.createTodo.mockResolvedValue(createdTodo);
 
         const result = await createTodo.execute(todoData);

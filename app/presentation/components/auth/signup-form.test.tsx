@@ -2,7 +2,6 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import SignUpForm from './signup-form';
-import { signIn } from 'next-auth/react';
 import { register } from '@/app/(infrastructure)/services/auth-service';
 
 jest.mock('next-auth/react', () => ({

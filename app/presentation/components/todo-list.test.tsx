@@ -22,7 +22,7 @@ jest.mock('next/navigation', () => ({
 }));
 
 describe("TodoList", () => {
-    const mockRouterPush = jest.fn();
+    const mockRouterPush = jest.fn(() => Promise.resolve(true));
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -95,9 +95,22 @@ describe("TodoList", () => {
         const screen = render(<TodoList />);
 
         fireEvent.click(screen.getByRole('button', { name: /Edit/i }));
-
+        expect(screen.getByRole('button', { name: /Edit/i }).closest('a')).toHaveAttribute('href', '/presentation/pages/protected/todos/1');
         await waitFor(() => {
             expect(mockRouterPush).toHaveBeenCalledWith('/presentation/pages/protected/todos/1');
+        });
+    });
+
+    it("redirects to todo create page on new button click", async () => {
+        mockUseTodos.mockReturnValue({ data: [], isLoading: false, error: null });
+
+        const screen = render(<TodoList />);
+
+        fireEvent.click(screen.getByRole('button', { name: /New/i }));
+        expect(screen.getByRole('button', { name: /New/i }).closest('a')).toHaveAttribute('href', '/presentation/pages/protected/todos/0');
+
+        await waitFor(() => {
+            expect(mockRouterPush).toHaveBeenCalledWith('/presentation/pages/protected/todos/new');
         });
     });
 });

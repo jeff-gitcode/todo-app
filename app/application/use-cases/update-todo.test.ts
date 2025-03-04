@@ -18,7 +18,7 @@ describe('UpdateTodo', () => {
     it('should call updateTodo with correct parameters', async () => {
         const id = 1;
         const todoData = { title: 'Updated Todo', description: 'Updated Description' };
-        const updatedTodo = { ...todoData, id, createdAt: new Date(), updatedAt: new Date() };
+        const updatedTodo = { ...todoData, id, createdAt: new Date(), updatedAt: new Date(), completed: false };
         todoRepository.updateTodo.mockResolvedValue(updatedTodo);
 
         await updateTodo.execute(id, todoData);
@@ -29,7 +29,7 @@ describe('UpdateTodo', () => {
     it('should return the updated todo', async () => {
         const id = 1;
         const todoData = { title: 'Updated Todo', description: 'Updated Description' };
-        const updatedTodo = { ...todoData, id, createdAt: new Date(), updatedAt: new Date() };
+        const updatedTodo = { ...todoData, id, createdAt: new Date(), updatedAt: new Date(), completed: false };
         todoRepository.updateTodo.mockResolvedValue(updatedTodo);
 
         const result = await updateTodo.execute(id, todoData);
