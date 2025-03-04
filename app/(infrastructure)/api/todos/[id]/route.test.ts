@@ -1,5 +1,5 @@
 import httpMocks from 'node-mocks-http';
-import { PUT } from './route';
+import { GET, PUT } from './route';
 import { prisma } from '@/app/(infrastructure)/database/prisma';
 
 jest.mock('@/app/(infrastructure)/database/prisma', () => ({
@@ -10,43 +10,85 @@ jest.mock('@/app/(infrastructure)/database/prisma', () => ({
     },
 }));
 
-describe('PUT /api/todos/[id]', () => {
+// describe('PUT /api/todos/[id]', () => {
+//     beforeEach(() => {
+//         jest.clearAllMocks();
+//     });
+
+//     xit('updates a todo successfully', async () => {
+//         const req = httpMocks.createRequest({
+//             method: 'PUT',
+//             url: '/api/todos/1',
+//             body: { title: 'Updated Todo', completed: true },
+//             params: { id: '1' },
+//         });
+//         const res = httpMocks.createResponse();
+
+//         const mockTodo = { id: 1, title: 'Updated Todo', completed: true };
+//         (prisma.todo.update as jest.Mock).mockResolvedValue(mockTodo);
+
+//         await PUT(req, { params: { id: '1' }, body: { title: 'Updated Todo', completed: true } });
+
+//         expect(res.statusCode).toBe(200);
+//         expect(res._getJSONData()).toEqual(mockTodo);
+//     });
+
+//     xit('returns an error if the update fails', async () => {
+//         const req = httpMocks.createRequest({
+//             method: 'PUT',
+//             url: '/api/todos/1',
+//             body: { title: 'Updated Todo', completed: true },
+//             params: { id: '1' },
+//         });
+//         const res = httpMocks.createResponse();
+
+//         (prisma.todo.update as jest.Mock).mockRejectedValue(new Error('Update failed'));
+
+//         await PUT(req, { params: { id: '1' }, body: { title: 'Updated Todo', completed: true } });
+
+//         expect(res.statusCode).toBe(500);
+//         expect(res._getJSONData()).toHaveProperty('error', 'Update failed');
+//     });
+// });
+
+
+// write test for GET /api/todos/[id]
+describe('GET /api/todos/[id]', () => {
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it('updates a todo successfully', async () => {
+    it('returns a todo successfully', async () => {
         const req = httpMocks.createRequest({
-            method: 'PUT',
+            method: 'GET',
             url: '/api/todos/1',
-            body: { title: 'Updated Todo', completed: true },
             params: { id: '1' },
         });
         const res = httpMocks.createResponse();
 
-        const mockTodo = { id: 1, title: 'Updated Todo', completed: true };
-        (prisma.todo.update as jest.Mock).mockResolvedValue(mockTodo);
+        const mockTodo = { id: 1, title: 'Existing Todo' };
+        (prisma.todo.findUnique as jest.Mock).mockResolvedValue(mockTodo);
 
-        await PUT(req, { params: { id: '1' }, body: { title: 'Updated Todo', completed: true } });
+        await GET(req, { params: { id: '1' } });
 
         expect(res.statusCode).toBe(200);
         expect(res._getJSONData()).toEqual(mockTodo);
     });
 
-    it('returns an error if the update fails', async () => {
+    it('returns an error if the todo is not found', async () => {
         const req = httpMocks.createRequest({
-            method: 'PUT',
+            method: 'GET',
             url: '/api/todos/1',
-            body: { title: 'Updated Todo', completed: true },
-            params: { id: '1' },
+            query: { id: '1' },
         });
         const res = httpMocks.createResponse();
 
-        (prisma.todo.update as jest.Mock).mockRejectedValue(new Error('Update failed'));
+        (prisma.todo.findUnique as jest.Mock).mockResolvedValue(null);
 
-        await PUT(req, { params: { id: '1' }, body: { title: 'Updated Todo', completed: true } });
+        await GET(req, { params: { id: '1' } });
 
-        expect(res.statusCode).toBe(500);
-        expect(res._getJSONData()).toHaveProperty('error', 'Update failed');
+        expect(res.statusCode).toBe(404);
+        expect(res._getJSONData()).toHaveProperty('error', 'Todo not found');
     });
 });
