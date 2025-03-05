@@ -66,6 +66,9 @@ export const useCreateTodo = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
     },
+    onError: (error) => {
+      console.error('Error creating todo:', error);
+    },
   });
 };
 

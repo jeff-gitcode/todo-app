@@ -1,16 +1,17 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, act } from '@testing-library/react-hooks';
 import fetchMock from 'jest-fetch-mock';
-import { useCreateTodo, useUpdateTodo } from './use-todos';
+import { result, waitFor } from '@testing-library/react';
+import { useCreateTodo, useDeleteTodo, useUpdateTodo } from './use-todos';
 import { TodoFormData } from '../validation/todo-schema';
 
 fetchMock.enableMocks();
 
 const queryClient = new QueryClient();
 
-const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-);
+const wrapper = ({ children }) => (
+    <QueryClientProvider client={queryClient} > {children} </QueryClientProvider>
+)
 
 describe('useCreateTodo', () => {
     beforeEach(() => {
@@ -69,7 +70,7 @@ describe('useUpdateTodo', () => {
         await waitFor(() => result.current.isSuccess);
 
         expect(fetchMock).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
-            method: 'PUT',
+            method: 'PATCH',
             body: JSON.stringify(mockTodo),
         }));
         expect(result.current.data).toEqual(mockTodo);
@@ -87,5 +88,41 @@ describe('useUpdateTodo', () => {
         await waitFor(() => result.current.isError);
 
         expect(result.current.error).toEqual(new Error('Failed to update todo'));
+    });
+});
+
+describe('useDeleteTodo', () => {
+    beforeEach(() => {
+        fetchMock.resetMocks();
+    });
+
+    it('deletes a todo successfully', async () => {
+        fetchMock.mockResponseOnce('');
+
+        const { result, waitFor } = renderHook(() => useDeleteTodo(), { wrapper });
+
+        act(() => {
+            result.current.mutate(1);
+        });
+
+        await waitFor(() => result.current.isSuccess);
+
+        expect(fetchMock).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
+            method: 'DELETE',
+        }));
+    });
+
+    it('handles error when deleting a todo', async () => {
+        fetchMock.mockRejectOnce(new Error('Failed to delete todo'));
+
+        const { result, waitFor } = renderHook(() => useDeleteTodo(), { wrapper });
+
+        act(() => {
+            result.current.mutate(1);
+        });
+
+        await waitFor(() => result.current.isError);
+
+        expect(result.current.error).toEqual(new Error('Failed to delete todo'));
     });
 });
