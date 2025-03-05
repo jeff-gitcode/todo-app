@@ -146,4 +146,7 @@ $ yarn add bcryptjs
 $ yarn add -D @types/bcryptjs
 $ yarn add @next-auth/prisma-adapter
 
+# storybook
+$ npx sb init
+
 ````

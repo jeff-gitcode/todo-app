@@ -34,6 +34,7 @@ describe('useCreateTodo', () => {
             method: 'POST',
             body: JSON.stringify(mockTodo),
         }));
+        console.log(result.current.data);
         expect(result.current.data).toEqual(mockTodo);
     });
 

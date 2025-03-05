@@ -5,32 +5,18 @@ import SignInForm from './signin-form';
 import { SignInFormValues, signInSchema } from "@/app/presentation/validation/auth-schema";
 import { signIn } from 'next-auth/react';
 import { resolve } from 'path';
+import { useForm } from 'react-hook-form';
 
-jest.mock('next-auth/react');
+jest.mock('next-auth/react', () => ({
+    signIn: jest.fn(),
+}));
 
 jest.mock('react-hook-form', () => ({
-    ...jest.requireActual('react-hook-form'),
+    useForm: jest.fn(),
+}));
 
-    useForm<SignInFormValues>() {
-        return {
-            register: jest.fn(),
-            handleSubmit: jest.fn(),
-            formState: {
-                errors: {},
-            },
-            setError: jest.fn(),
-            clearErrors: jest.fn(),
-            setValue: jest.fn(),
-            trigger: jest.fn(),
-            resolver: {
-                validate: jest.fn(),
-            },
-            defaultValues: {
-                email: '',
-                password: '',
-            },
-        };
-    }
+jest.mock('@hookform/resolvers/zod', () => ({
+    zodResolver: jest.fn(),
 }));
 
 describe('SignInForm', () => {
@@ -39,6 +25,22 @@ describe('SignInForm', () => {
     });
 
     it('renders the form correctly', () => {
+        (useForm as jest.Mock).mockReturnValue({
+            register: jest.fn(),
+            handleSubmit: jest.fn(),
+            formState: { errors: {} },
+            setError: jest.fn(),
+            clearErrors: jest.fn(),
+            setValue: jest.fn(),
+            trigger: jest.fn(),
+            getValues: jest.fn(),
+            watch: jest.fn(),
+            defaultValues: {
+                email: '',
+                password: '',
+            },
+        });
+
         const screen = render(<SignInForm />);
 
         expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
