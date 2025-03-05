@@ -1,5 +1,6 @@
 import { createMocks } from 'node-mocks-http';
 import { POST } from './create';
+import { CreateTodo } from '@/app/application/use-cases/create-todo';
 
 jest.mock('@/app/(infrastructure)/database/prisma-todo-repository');
 jest.mock('@/app/application/use-cases/create-todo');
@@ -16,12 +17,12 @@ describe('POST /api/todos/create', () => {
             body: { title: 'Test Todo' },
         });
 
-        // (CreateTodo.prototype.execute as jest.Mock).mockResolvedValue(mockTodo);
-
+        const mockTodo = { id: 1, title: 'Test Todo', completed: false };
+        (CreateTodo.prototype.execute as jest.Mock).mockResolvedValue(mockTodo);
         await POST(req, res);
 
         expect(res._getStatusCode()).toBe(201);
-        // expect(res._getJSONData()).toEqual(mockTodo);
+        expect(res._getJSONData()).toEqual(mockTodo);
     });
 
     it('returns validation errors for invalid data', async () => {

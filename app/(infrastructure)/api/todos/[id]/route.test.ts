@@ -1,94 +1,180 @@
-import httpMocks from 'node-mocks-http';
-import { GET, PUT } from './route';
-import { prisma } from '@/app/(infrastructure)/database/prisma';
+import { PrismaClient } from '@prisma/client';
+import { DELETE, GET, PATCH, PUT } from './route';
+import { NextResponse } from 'next/server';
+import { createMocks } from 'node-mocks-http';
 
-jest.mock('@/app/(infrastructure)/database/prisma', () => ({
-    prisma: {
-        todo: {
-            update: jest.fn(),
-        },
+jest.mock('next/server', () => ({
+    NextResponse: {
+        json: jest.fn(),
     },
+    Request: jest.fn().mockImplementation(() => ({
+        json: jest.fn(),
+    })),
 }));
 
-// describe('PUT /api/todos/[id]', () => {
-//     beforeEach(() => {
-//         jest.clearAllMocks();
-//     });
+jest.mock('@prisma/client', () => {
+    const mPrismaClient = {
+        todo: {
+            findUnique: jest.fn(),
+            update: jest.fn(),
+            delete: jest.fn(),
+        },
+    };
+    return { PrismaClient: jest.fn(() => mPrismaClient) };
+});
 
-//     xit('updates a todo successfully', async () => {
-//         const req = httpMocks.createRequest({
-//             method: 'PUT',
-//             url: '/api/todos/1',
-//             body: { title: 'Updated Todo', completed: true },
-//             params: { id: '1' },
-//         });
-//         const res = httpMocks.createResponse();
+const prisma = new PrismaClient();
 
-//         const mockTodo = { id: 1, title: 'Updated Todo', completed: true };
-//         (prisma.todo.update as jest.Mock).mockResolvedValue(mockTodo);
-
-//         await PUT(req, { params: { id: '1' }, body: { title: 'Updated Todo', completed: true } });
-
-//         expect(res.statusCode).toBe(200);
-//         expect(res._getJSONData()).toEqual(mockTodo);
-//     });
-
-//     xit('returns an error if the update fails', async () => {
-//         const req = httpMocks.createRequest({
-//             method: 'PUT',
-//             url: '/api/todos/1',
-//             body: { title: 'Updated Todo', completed: true },
-//             params: { id: '1' },
-//         });
-//         const res = httpMocks.createResponse();
-
-//         (prisma.todo.update as jest.Mock).mockRejectedValue(new Error('Update failed'));
-
-//         await PUT(req, { params: { id: '1' }, body: { title: 'Updated Todo', completed: true } });
-
-//         expect(res.statusCode).toBe(500);
-//         expect(res._getJSONData()).toHaveProperty('error', 'Update failed');
-//     });
-// });
-
-
-// write test for GET /api/todos/[id]
 describe('GET /api/todos/[id]', () => {
-
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it('returns a todo successfully', async () => {
-        const req = httpMocks.createRequest({
-            method: 'GET',
-            url: '/api/todos/1',
-            params: { id: '1' },
-        });
-        const res = httpMocks.createResponse();
-
-        const mockTodo = { id: 1, title: 'Existing Todo' };
+    it('should return a todo item when found', async () => {
+        const mockTodo = { id: 1, title: 'Test Todo', completed: false };
         (prisma.todo.findUnique as jest.Mock).mockResolvedValue(mockTodo);
 
-        await GET(req, { params: { id: '1' } });
+        const { req, res } = createMocks({ method: 'GET' });
+        const params = { id: '1' };
 
-        expect(res.statusCode).toBe(200);
-        expect(res._getJSONData()).toEqual(mockTodo);
+        const response = await GET(req, { params });
+
+        expect(prisma.todo.findUnique).toHaveBeenCalledWith({ where: { id: 1 } });
+        expect(response).toEqual(NextResponse.json(mockTodo));
     });
 
-    it('returns an error if the todo is not found', async () => {
-        const req = httpMocks.createRequest({
-            method: 'GET',
-            url: '/api/todos/1',
-            query: { id: '1' },
-        });
-        const res = httpMocks.createResponse();
+    it('should return a 500 error when an exception occurs', async () => {
+        const errorMessage = 'Database error';
+        (prisma.todo.findUnique as jest.Mock).mockRejectedValue(new Error(errorMessage));
 
-        (prisma.todo.findUnique as jest.Mock).mockResolvedValue(null);
+        const { req, res } = createMocks({ method: 'GET' });
+        const params = { id: '1' };
 
-        await GET(req, { params: { id: '1' } });
+        const response = await GET(req, { params });
 
-        expect(res.statusCode).toBe(404);
-        expect(res._getJSONData()).toHaveProperty('error', 'Todo not found');
+        expect(prisma.todo.findUnique).toHaveBeenCalledWith({ where: { id: 1 } });
+        expect(response).toEqual(NextResponse.json({ error: errorMessage }, { status: 500 }));
     });
 });
+
+describe('PUT /api/todos/[id]', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should update a todo item successfully', async () => {
+        const mockTodo = { id: 1, title: 'Test Todo', completed: false };
+        (prisma.todo.update as jest.Mock).mockResolvedValue(mockTodo);
+
+        const { req, res } = createMocks({
+            method: 'PUT',
+            body: { title: 'Updated Todo', completed: true },
+        });
+        const params = { id: '1' };
+
+        const response = await PUT(req, { params, body: req.body });
+
+        expect(prisma.todo.update).toHaveBeenCalledWith({
+            where: { id: 1 },
+            data: { title: 'Updated Todo', completed: true },
+        });
+        expect(response).toEqual(NextResponse.json(mockTodo));
+    });
+
+    it('should return a 500 error when an exception occurs', async () => {
+        const errorMessage = 'Database error';
+        (prisma.todo.update as jest.Mock).mockRejectedValue(new Error(errorMessage));
+
+        const { req, res } = createMocks({
+            method: 'PUT',
+            body: { title: 'Updated Todo', completed: true },
+        });
+        const params = { id: '1' };
+
+        const response = await PUT(req, { params, body: req.body });
+
+        expect(prisma.todo.update).toHaveBeenCalledWith({
+            where: { id: 1 },
+            data: { title: 'Updated Todo', completed: true },
+        });
+        expect(response).toEqual(NextResponse.json({ error: errorMessage }, { status: 500 }));
+    });
+});
+
+describe('DELETE /api/todos/[id]', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should delete a todo item successfully', async () => {
+        const { req, res } = createMocks({ method: 'DELETE' });
+        const params = { id: '1' };
+
+        const responnse = await DELETE(req, { params });
+
+        expect(prisma.todo.delete).toHaveBeenCalledWith({ where: { id: 1 } });
+        expect(responnse).toEqual(NextResponse.json(null, { status: 204 }));
+    });
+
+    it('should return a 500 error when an exception occurs', async () => {
+        const errorMessage = 'Database error';
+        (prisma.todo.delete as jest.Mock).mockRejectedValue(new Error(errorMessage));
+
+        const { req, res } = createMocks({ method: 'DELETE' });
+        const params = { id: '1' };
+
+        const response = await DELETE(req, { params });
+
+        expect(prisma.todo.delete).toHaveBeenCalledWith({ where: { id: 1 } });
+        expect(response).toEqual(NextResponse.json({ error: errorMessage }, { status: 500 }));
+    });
+});
+
+describe('PATCH /api/todos/[id]', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should update a todo item successfully', async () => {
+        const mockTodo = { id: 1, title: 'Test Todo', completed: false };
+        (prisma.todo.update as jest.Mock).mockResolvedValue(mockTodo);
+
+        const { req, res } = createMocks({
+            method: 'PATCH',
+            body: { title: 'Updated Todo', completed: true },
+        });
+        const params = { id: '1' };
+        req.json = jest.fn().mockResolvedValue(req.body);
+
+        const response = await PATCH(req,
+            { params });
+
+        expect(prisma.todo.update).toHaveBeenCalledWith({
+            where: { id: 1 },
+            data: { title: 'Updated Todo', completed: true },
+        });
+        expect(response).toEqual(NextResponse.json(mockTodo));
+    }
+    );
+
+    it('should return a 500 error when an exception occurs', async () => {
+        const errorMessage = 'Database error';
+        (prisma.todo.update as jest.Mock).mockRejectedValue(new Error(errorMessage));
+
+        const { req, res } = createMocks({
+            method: 'PATCH',
+            body: { title: 'Updated Todo', completed: true },
+        });
+        const params = { id: '1' };
+        req.json = jest.fn().mockResolvedValue(req.body);
+
+        const response = await PATCH(req, { params });
+
+        expect(prisma.todo.update).toHaveBeenCalledWith({
+            where: { id: 1 },
+            data: { title: 'Updated Todo', completed: true },
+        });
+        expect(response).toEqual(NextResponse.json({ error: errorMessage }, { status: 500 }));
+    });
+}
+);
