@@ -8,6 +8,24 @@ jest.mock('next-auth/react', () => ({
     signIn: jest.fn(),
 }));
 
+jest.mock('react-hook-form', () => ({
+    ...jest.requireActual('react-hook-form'),
+
+    useForm: jest.fn(() => ({
+        register: jest.fn(),
+        handleSubmit: jest.fn(),
+        formState: { errors: {} },
+        setError: jest.fn(),
+        clearErrors: jest.fn(),
+        control: jest.fn(),
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+    })),
+    zodResolver: jest.fn(),
+}));
+
 describe('SignInForm', () => {
     beforeEach(() => {
         jest.clearAllMocks();
