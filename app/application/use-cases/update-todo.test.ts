@@ -11,7 +11,7 @@ describe('UpdateTodo', () => {
     beforeEach(() => {
         todoRepository = {
             updateTodo: jest.fn()
-        } as jest.Mocked<ITodoRepository>;
+        } as unknown as jest.Mocked<ITodoRepository>;
         updateTodo = new UpdateTodo(todoRepository);
     });
 

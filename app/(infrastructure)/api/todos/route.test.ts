@@ -42,7 +42,7 @@ describe('GET /api/todos', () => {
 
         const { req, res } = createMocks({ method: 'GET' });
 
-        const response = await GET(req);
+        const response = await GET();
 
         expect(prisma.todo.findMany).toHaveBeenCalled();
         expect(NextResponse.json).toHaveBeenCalledWith(mockTodos);
@@ -55,7 +55,7 @@ describe('GET /api/todos', () => {
 
         const { req, res } = createMocks({ method: 'GET' });
 
-        const response = await GET(req);
+        const response = await GET();
 
         expect(prisma.todo.findMany).toHaveBeenCalled();
         expect(NextResponse.json).toHaveBeenCalledWith({ error: errorMessage }, { status: 500 });

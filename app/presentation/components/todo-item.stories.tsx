@@ -13,14 +13,24 @@ type Story = StoryObj<typeof TodoItem>;
 
 export const Default: Story = {
     args: {
-        title: "Test Todo",
-        completed: false,
+        todo: {
+            id: 1,
+            title: "Test Todo",
+        },
+        onSuccess: () => {
+            console.log("Success!");
+        }
     },
 };
 
 export const Completed: Story = {
     args: {
-        title: "Test Todo",
-        completed: true,
+        todo: {
+            id: 1,
+            title: "Test Todo",
+        },
+        onSuccess: () => {
+            console.log("Success!");
+        }
     },
 };

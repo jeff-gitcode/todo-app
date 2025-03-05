@@ -10,7 +10,7 @@ describe('CreateTodo', () => {
     beforeEach(() => {
         todoRepository = {
             createTodo: jest.fn()
-        } as jest.Mocked<ITodoRepository>;
+        } as unknown as jest.Mocked<ITodoRepository>;
         createTodo = new CreateTodo(todoRepository);
     });
 

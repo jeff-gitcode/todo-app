@@ -43,7 +43,7 @@ describe('PrismaTodoRepository', () => {
     });
 
     it('creates a new todo', async () => {
-        const todoData = { title: 'New Todo' };
+        const todoData = { title: 'New Todo', completed: false };
         const mockTodo = { id: 1, ...todoData, createdAt: new Date(), updatedAt: new Date() };
         (prisma.todo.create as jest.Mock).mockResolvedValue(mockTodo);
 
