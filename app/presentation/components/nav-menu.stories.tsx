@@ -1,12 +1,12 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-
+import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { SessionProvider } from '../../session-provider';
 import { Providers } from '../../providers';
 import NavMenu from './nav-menu';
 import * as nextAuth from "next-auth/react";
-import { createMock, getMock } from 'storybook-addon-module-mock';
+import { createMock, getMock, render } from 'storybook-addon-module-mock';
 
 const session = {
     user: {
@@ -23,9 +23,7 @@ const meta = {
     title: 'Components/NavMenu',
     component: NavMenu,
     tags: ['autodocs'],
-    parameters: {
-        controls: { expanded: true },
-    },
+
     // decorators: [
     //     (Story) => (
     //         <SessionProvider>
@@ -54,25 +52,24 @@ export const WithUser: Story = {
     parameters: {
         moduleMock: {
             mock: () => {
-                const useSession = createMock(nextAuth, 'useSession');
-                useSession.mockImplementation(() => ({ data: session, status: 'authenticated' }));
-                return [useSession];
+                const useSession = nextAuth.useSession;
+                const mock = createMock(nextAuth, 'useSession');
+                mock.mockImplementation(useSession);
+                // useSession.mockImplementation(() => ({ data: session, status: 'authenticated' }));
+                return [mock];
             },
         },
+    },
+    play: async ({ canvasElement, parameters }) => {
+        const canvas = within(canvasElement);
+        const mock = getMock(parameters, nextAuth, 'useSession');
+        mock.mockImplementation(() => ({ data: session, status: 'authenticated' }));
+        expect(mock).toBeCalled();
     },
 };
 
 export const WithoutUser: Story = {
     args: {
         // Provide props to simulate a logged-out user
-    },
-    parameters: {
-        moduleMock: {
-            mock: () => {
-                const useSession = createMock(nextAuth, 'useSession');
-                useSession.mockImplementation(() => ({ data: null, status: 'unauthenticated' }));
-                return [useSession];
-            },
-        },
-    },
+    }
 };

@@ -12,7 +12,14 @@ const config: StorybookConfig = {
     "@chromatic-com/storybook",
     "@storybook/addon-actions",
     "@storybook/addon-jest",
-    "@storybook/experimental-addon-test"
+    "@storybook/experimental-addon-test",
+    'storybook-addon-vite-mock',
+    {
+      name: 'storybook-addon-module-mock',
+      options: {
+        exclude: ['**/node_modules/@mui/**'],
+      },
+    },
   ],
   "framework": '@storybook/nextjs',
   // "framework": {
