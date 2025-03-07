@@ -14,8 +14,8 @@ const mockTodos = [
   { id: 3, title: 'Todo 3', completed: false, createdAt: new Date(), updatedAt: new Date() },
 ];
 
-const useTodos = fn(actual.useTodos).mockName('useTodos');
-const useDeleteTodo = fn(actual.useDeleteTodo).mockName('useDeleteTodo');
+// const useTodos = fn(actual.useTodos).mockName('useTodos');
+// const useDeleteTodo = fn(actual.useDeleteTodo).mockName('useDeleteTodo');
 
 const meta = {
   title: 'Components/TodoList',
@@ -47,8 +47,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   beforeEach: () => {
     // Reset the mock before each test
-    useTodos.mockClear();
-    useDeleteTodo.mockClear();
+    // useTodos.mockClear();
+    // useDeleteTodo.mockClear();
 
     // useTodos.mockReturnValue({ data: mockTodos, isLoading: false, error: null });
     // useDeleteTodo.mockReturnValue({
