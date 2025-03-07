@@ -16,6 +16,7 @@ import { redirect } from "next/navigation";
 
 export default function NavMenu() {
     const { data: session, status } = useSession();
+    
     console.log("************************NavMenu***********************");
     console.log(session);
 
