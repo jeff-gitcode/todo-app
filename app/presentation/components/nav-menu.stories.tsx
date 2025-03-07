@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { expect, userEvent, waitFor, within } from '@storybook/test';
+import { expect, userEvent, waitFor, within, screen } from '@storybook/test';
 import { SessionProvider } from '../../session-provider';
 import { Providers } from '../../providers';
 import NavMenu from './nav-menu';
@@ -19,11 +19,20 @@ const session = {
     },
 }
 
+const routerPush = fn();
+
 const meta = {
     title: 'Components/NavMenu',
     component: NavMenu,
     tags: ['autodocs'],
-
+    parameters: {
+        controls: { expanded: true },
+        nextjs: {
+            // 👇 As in the Next.js application, next/navigation only works using App Router
+            // appDirectory: true,
+        },
+        jest: ['nav-menu.test.tsx'],
+    },
     // decorators: [
     //     (Story) => (
     //         <SessionProvider>
@@ -46,6 +55,11 @@ export const Default: Story = {
 };
 
 export const WithUser: Story = {
+    beforeEach: () => {
+        // Reset the mock before each test
+        fn().mockClear();
+
+    },
     args: {
         // Provide props to simulate a logged-in user
     },
@@ -55,21 +69,52 @@ export const WithUser: Story = {
                 const useSession = nextAuth.useSession;
                 const mock = createMock(nextAuth, 'useSession');
                 mock.mockImplementation(useSession);
-                // useSession.mockImplementation(() => ({ data: session, status: 'authenticated' }));
                 return [mock];
             },
         },
     },
     play: async ({ canvasElement, parameters }) => {
-        const canvas = within(canvasElement);
         const mock = getMock(parameters, nextAuth, 'useSession');
         mock.mockImplementation(() => ({ data: session, status: 'authenticated' }));
         expect(mock).toBeCalled();
+
+        const canvas = within(canvasElement);
+        const homeButton = screen.getByRole('link', { name: /Home/i });
+        userEvent.click(homeButton);
+        await waitFor(() => expect(routerPush).toBeCalledTimes(1));
+
+
     },
 };
 
 export const WithoutUser: Story = {
     args: {
         // Provide props to simulate a logged-out user
-    }
+    },
+    parameters: {
+        moduleMock: {
+            mock: () => {
+                const useSession = nextAuth.useSession;
+                const mock = createMock(nextAuth, 'useSession');
+                mock.mockImplementation(useSession);
+                return [mock];
+            },
+        },
+        nextjs: {
+            appDirectory: false,
+            router: {
+                push: routerPush,
+            },
+        },
+    },
+    play: async ({ canvasElement, parameters }) => {
+        const mock = getMock(parameters, nextAuth, 'useSession');
+        mock.mockImplementation(() => ({ data: {}, status: 'unauthenticated' }));
+        expect(mock).toBeCalled();
+
+        const canvas = within(canvasElement);
+        const loginButton = canvas.getByRole('link', { name: /Sign In/i });
+        userEvent.click(loginButton);
+        await waitFor(async () => expect(routerPush).toBeCalledTimes(1));
+    },
 };
