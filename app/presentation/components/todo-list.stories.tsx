@@ -75,10 +75,13 @@ export const Default: Story = {
       mock: () => {
         const useTodos = actual.useTodos;
         const useDeleteTodo = actual.useDeleteTodo;
+
         const mock = createMock(actual, 'useTodos');
         mock.mockImplementation(useTodos);
+
         const mock2 = createMock(actual, 'useDeleteTodo');
         mock2.mockImplementation(useDeleteTodo);
+        
         return [mock, mock2];
       },
     },
