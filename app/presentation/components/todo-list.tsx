@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 const TodoList = () => {
   const router = useRouter();
   const { data: todos, isLoading, error } = useTodos();
+  console.log('todos', todos);
   const { mutate: deleteTodo } = useDeleteTodo();
 
   if (isLoading) return <div>Loading...</div>;
