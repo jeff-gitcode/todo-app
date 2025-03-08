@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { act } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { fn, waitFor, within, expect } from '@storybook/test';
 import { UseMutateFunction } from '@tanstack/react-query';
@@ -35,19 +35,19 @@ export const Create: Story = {
                 const useCreateTodo = actual.useCreateTodo;
                 const useUpdateTodo = actual.useUpdateTodo;
 
-                const mock = createMock(actual, 'useCreateTodo');
-                mock.mockImplementation(useCreateTodo);
+                const mockUseCreateTodo = createMock(actual, 'useCreateTodo');
+                mockUseCreateTodo.mockImplementation(useCreateTodo);
 
-                const mock2 = createMock(actual, 'useUpdateTodo');
-                mock2.mockImplementation(useUpdateTodo);
+                const mockUseUpdateTodo = createMock(actual, 'useUpdateTodo');
+                mockUseUpdateTodo.mockImplementation(useUpdateTodo);
 
-                return [mock, mock2];
+                return [mockUseCreateTodo, mockUseUpdateTodo];
             },
         },
     },
     play: async ({ canvasElement, parameters }) => {
-        const mock = getMock(parameters, actual, 'useCreateTodo');
-        mock.mockImplementation(() => ({
+        const mockUseCreateTodo = getMock(parameters, actual, 'useCreateTodo');
+        mockUseCreateTodo.mockImplementation(() => ({
             mutate: fn() as UseMutateFunction<any, Error, { title: string; completed?: boolean | undefined; }, unknown>,
             data: undefined,
             error: null,
@@ -59,8 +59,8 @@ export const Create: Story = {
             isSuccess: false,
         }));
 
-        const mock2 = getMock(parameters, actual, 'useUpdateTodo');
-        mock2.mockImplementation(() => ({
+        const mockUseUpdateTodo = getMock(parameters, actual, 'useUpdateTodo');
+        mockUseUpdateTodo.mockImplementation(() => ({
             mutate: fn() as UseMutateFunction<any, Error, { title: string; completed?: boolean | undefined; }, unknown>,
             data: undefined,
             error: null,
@@ -80,6 +80,14 @@ export const Create: Story = {
 
         const button = canvas.getByRole('button', { name: 'Create Todo' });
         expect(button).toBeInTheDocument();
+
+        act(() => {
+            button.click();
+        });
+
+        await waitFor(async () => {
+            await expect(mockUseCreateTodo).toHaveBeenCalled();
+        });
     }
 };
 
@@ -93,19 +101,19 @@ export const Edit: Story = {
                 const useCreateTodo = actual.useCreateTodo;
                 const useUpdateTodo = actual.useUpdateTodo;
 
-                const mock = createMock(actual, 'useCreateTodo');
-                mock.mockImplementation(useCreateTodo);
+                const mockUseCreateTodo = createMock(actual, 'useCreateTodo');
+                mockUseCreateTodo.mockImplementation(useCreateTodo);
 
-                const mock2 = createMock(actual, 'useUpdateTodo');
-                mock2.mockImplementation(useUpdateTodo);
+                const mockUseUpdateTodo = createMock(actual, 'useUpdateTodo');
+                mockUseUpdateTodo.mockImplementation(useUpdateTodo);
 
-                return [mock, mock2];
+                return [mockUseCreateTodo, mockUseUpdateTodo];
             }
         }
     },
     play: async ({ canvasElement, parameters }) => {
-        const mock = getMock(parameters, actual, 'useCreateTodo');
-        mock.mockImplementation(() => ({
+        const mockUseUpdateTodo = getMock(parameters, actual, 'useUpdateTodo');
+        mockUseUpdateTodo.mockImplementation(() => ({
             mutate: fn() as UseMutateFunction<any, Error, { title: string; completed?: boolean | undefined; }, unknown>,
             data: undefined,
             error: null,
@@ -121,5 +129,19 @@ export const Edit: Story = {
         render(parameters);
 
         const canvas = within(canvasElement);
+
+        const input = canvas.getByDisplayValue('Sample Todo');
+        expect(input).toBeInTheDocument();
+
+        const button = canvas.getByRole('button', { name: 'Update Todo' });
+        expect(button).toBeInTheDocument();
+
+        act(() => {
+            button.click();
+        });
+
+        await waitFor(async () => {
+            await expect(mockUseUpdateTodo).toHaveBeenCalled();
+        });
     }
 };
