@@ -52,6 +52,44 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - [x] shadcn-ui
 - [x] sqllite
 
+## Scripts
+
+- `dev`: Runs the development server.
+- `build`: Builds the application for production.
+- `start`: Starts the production server.
+- `lint`: Runs ESLint to check for linting errors.
+- `test`: Runs the test suite.
+
+## Project Structure
+
+```
+nextjs-todo-app/
+├── .next/                  # Next.js build output (generated)
+├── node_modules/           # Node.js modules (generated)
+├── public/                 # Static files
+│   ├── favicon.ico
+│   └── ...
+├── src/                    # Source files
+│   ├── app/                # Application pages and components
+│   │   ├── page.tsx        # Main page component
+│   │   └── ...
+│   ├── components/         # Reusable components
+│   │   └── ...
+│   ├── styles/             # Global styles
+│   │   ├── globals.css
+│   │   └── ...
+│   ├── utils/              # Utility functions
+│   │   └── ...
+│   └── ...
+├── .eslintrc.js            # ESLint configuration
+├── .gitignore              # Git ignore file
+├── next.config.ts          # Next.js configuration
+├── package.json            # Project metadata and dependencies
+├── README.md               # Project documentation
+├── tsconfig.json           # TypeScript configuration
+└── yarn.lock               # Yarn lock file (or package-lock.json for npm)
+```
+
 ````
 $ npx create-next-app@latest todo-app with-jest with-jest-app --typescript
 $ npm install -g npm@11.0.0
@@ -148,5 +186,6 @@ $ yarn add @next-auth/prisma-adapter
 
 # storybook
 $ npx sb init
+$ yarn storybook
 
-````
+```
