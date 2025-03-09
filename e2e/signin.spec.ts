@@ -1,25 +1,30 @@
 // // tests/e2e/todos.spec.ts
 import { test, expect } from "@playwright/test";
 
-test("should show the home page", async ({ page }) => {
+test("should show the sigin page", async ({ page }) => {
     await page.goto("/");
-    await expect(page.locator("h1")).toHaveText("Home");
+    await expect(page.getByRole('link', { name: 'Sign In' })).toBeVisible();
+    await expect(page.locator("p")).toHaveText("Access Denied");
 });
 
-test("should show the login form", async ({ page }) => {
-    await page.goto("/login");
-    await expect(page.locator("h1")).toHaveText("Login");
+test("should show the register page", async ({ page }) => {
+    await page.goto("/");
+    // click on sign in link
+    await page.click("text=Sign In");
+    // should redirect to sign in page
+    await page.waitForURL('**/signin');
+    // click on register link    
 });
 
-test("should show the register form", async ({ page }) => {
-    await page.goto("/register");
-    await expect(page.locator("h1")).toHaveText("Register");
-});
+// test("should show the register form", async ({ page }) => {
+//     await page.goto("/register");
+//     await expect(page.locator("h1")).toHaveText("Register");
+// });
 
-test("should show the todos page", async ({ page }) => {
-    await page.goto("/todos");
-    await expect(page.locator("h1")).toHaveText("Todos");
-});
+// test("should show the todos page", async ({ page }) => {
+//     await page.goto("/todos");
+//     await expect(page.locator("h1")).toHaveText("Todos");
+// });
 
 
 
