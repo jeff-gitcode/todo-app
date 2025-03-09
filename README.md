@@ -91,7 +91,7 @@ nextjs-todo-app/
 ```
 
 ````
-$ npx create-next-app@latest todo-app with-jest with-jest-app --typescript
+$ npx create-next-app@latest todo-app with-jest with-playwright --typescript
 $ npm install -g npm@11.0.0
 $ yarn add @tanstack/react-query @tanstack/react-query-devtools zod react-hook-form next-auth @prisma/client @storybook/react @testing-library/react @testing-library/jest-dom jest playwright shadcn-ui
 $ yarn add -D prisma   
@@ -187,5 +187,13 @@ $ yarn add @next-auth/prisma-adapter
 # storybook
 $ npx sb init
 $ yarn storybook
+
+# playwright
+$ yarn create playwright
+√ Where to put your end-to-end tests? · e2e
+√ Add a GitHub Actions workflow? (y/N) · false
+√ Install Playwright browsers (can be done manually via 'yarn playwright install')? (Y/n) · true
+
+$ yarn add -D @playwright/test
 
 ```

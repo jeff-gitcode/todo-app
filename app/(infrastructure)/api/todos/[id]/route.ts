@@ -46,7 +46,6 @@ export async function PATCH(req: Request,
     { params }: { params: { id: string } }): Promise<Response> {
     try {
         const payload = await req.json();
-        console.log(payload);
 
         const { id } = await params;
         const { title, completed } = payload;

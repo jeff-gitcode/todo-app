@@ -17,7 +17,8 @@ const customJestConfig = {
     '^@/(.*)$': '<rootDir>/$1',
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
-  testTimeout: 20000
+  testTimeout: 20000,
+  modulePathIgnorePatterns: ["spec.js", "spec.ts", "spec.tsx"],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

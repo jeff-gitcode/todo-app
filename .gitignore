@@ -43,3 +43,10 @@ next-env.d.ts
 *storybook.log
 
 .jest-test-results.json
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
