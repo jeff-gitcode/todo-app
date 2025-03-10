@@ -17,5 +17,4 @@ jobs:
       - run: yarn
       - run: yarn test
       - run: yarn storybook:build
-      - run: npx playwright install 
       - run: npx playwright test
