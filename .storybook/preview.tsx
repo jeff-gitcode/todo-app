@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Preview } from '@storybook/react'
-import { Providers } from '../app/providers';
-import { SessionProvider } from '../app/session-provider';
+import { SessionProvider } from 'next-auth/react';
+import { Session } from "next-auth";
 import '../app/globals.css'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const preview: Preview = {
   parameters: {
@@ -14,13 +15,27 @@ const preview: Preview = {
     },
   },
   decorators: [
-    (Story) => (
-      <SessionProvider>
-        <Providers>
-          <Story />
-        </Providers>
-      </SessionProvider>
-    )
+    (Story) => {
+      const session: Session = {
+        user: {
+          id: "",
+          name: "",
+          email: "",
+          image: "",
+        },
+        expires: "",
+      };
+
+      const [queryClient] = useState(() => new QueryClient());
+
+      return (
+        <SessionProvider session={session}>
+          <QueryClientProvider client={queryClient}>
+            <Story />
+          </QueryClientProvider>
+        </SessionProvider>
+      )
+    }
   ],
 };
 

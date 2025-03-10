@@ -1,7 +1,6 @@
 import { act } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { fn, waitFor, within, expect } from '@storybook/test';
-import { UseMutateFunction } from '@tanstack/react-query';
+import { fn, waitFor, within, expect, fireEvent } from '@storybook/test';
 import TodoItem from './todo-item';
 import { createMock, getMock, render } from 'storybook-addon-module-mock';
 import * as actual from '../hooks/use-todos';
@@ -103,6 +102,11 @@ export const Edit: Story = {
         }
     },
     play: async ({ canvasElement, parameters }) => {
+        const mockUseCreateTodo = getMock(parameters, actual, 'useCreateTodo');
+        mockUseCreateTodo.mockImplementation(() => ({
+            mutate: fn()
+        }));
+
         const mockUseUpdateTodo = getMock(parameters, actual, 'useUpdateTodo');
         mockUseUpdateTodo.mockImplementation(() => ({
             mutate: fn()
@@ -115,6 +119,10 @@ export const Edit: Story = {
 
         const input = canvas.getByDisplayValue('Sample Todo');
         expect(input).toBeInTheDocument();
+        // change the value of the input
+        fireEvent.change(canvas.getByPlaceholderText('Enter a todo'), {
+            target: { value: 'Updated Todo' }
+        });
 
         const button = canvas.getByRole('button', { name: 'Update Todo' });
         expect(button).toBeInTheDocument();

@@ -5,6 +5,8 @@ import NavMenu from './nav-menu';
 import * as nextAuth from "next-auth/react";
 import { createMock, getMock } from 'storybook-addon-module-mock';
 import * as nextNavigation from '@storybook/nextjs/navigation.mock';
+import { SessionProvider } from '@/app/session-provider';
+import { Providers } from '@/app/providers';
 
 const session = {
     user: {
@@ -33,15 +35,15 @@ const meta = {
         },
         jest: ['nav-menu.test.tsx'],
     },
-    // decorators: [
-    //     (Story) => (
-    //         <SessionProvider>
-    //             <Providers>
-    //                 <Story />
-    //             </Providers>
-    //         </SessionProvider>
-    //     ),
-    // ],
+    decorators: [
+        (Story) => (
+            <SessionProvider>
+                <Providers>
+                    <Story />
+                </Providers>
+            </SessionProvider>
+        ),
+    ],
 } satisfies Meta<typeof NavMenu>;
 
 export default meta;
