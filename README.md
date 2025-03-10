@@ -56,6 +56,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - [x] playwright
 - [x] shadcn-ui
 - [x] sqllite
+- [x] ci/github action
 
 ## Scripts
 
@@ -202,4 +203,7 @@ $ yarn create playwright
 $ yarn add -D @playwright/test
 $ yarn test:playwright:report
 $ npx playwright show-report
+
+# github action
+
 ```
