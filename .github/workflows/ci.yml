@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  test:
+  Todo-App-CI:
     # runs-on: windows-latest
     # strategy:
     #   matrix:
