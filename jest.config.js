@@ -23,6 +23,7 @@ const customJestConfig = {
   //   '^.+\\.module\\.(css|sass|scss)$',
   //   '/node_modules/(?!@next-auth)',
   // ],
+  transformIgnorePatterns: [`/node_modules/(?!@auth/core)`],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

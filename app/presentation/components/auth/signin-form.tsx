@@ -1,6 +1,7 @@
-// 'use client';
+'use client';
 
 // src/presentation/pages/auth/signin.tsx
+import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,6 @@ import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { FormEvent } from "react";
-import { signIn } from "next-auth/react";
 
 export default function SignInForm() {
     const form = useForm<SignInFormValues>({
