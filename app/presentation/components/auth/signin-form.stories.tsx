@@ -2,7 +2,6 @@ import { act } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { fn, waitFor, within, expect, userEvent } from '@storybook/test';
 import { fireEvent } from '@testing-library/dom';
-import * as nextAuthReact from 'next-auth/react';
 import * as nextNavigation from '@storybook/nextjs/navigation.mock';
 import * as authService from '@/app/(infrastructure)/services/auth-service';
 
@@ -10,7 +9,8 @@ import SignInForm from './signin-form';
 import { createMock } from 'storybook-addon-module-mock';
 
 const login = createMock(authService, 'login');
-const redirect = fn(nextNavigation.redirect).mockName('redirect');
+// const redirect = fn(nextNavigation.redirect).mockName('redirect');
+const redirect = createMock(nextNavigation, 'redirect');
 
 const meta = {
     title: 'Components/SignInForm',
@@ -34,7 +34,6 @@ export const Default: Story = {
     },
     play: async ({ canvasElement, parameters }) => {
         login.mockReturnValue({ ok: true, error: null, status: 200, url: null });
-        // redirect.mockReturnValue({ url: '/' });
         const canvas = within(canvasElement);
 
         const emailInput = canvas.getByLabelText(/email/i);

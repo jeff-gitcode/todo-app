@@ -4,8 +4,10 @@ import SignUpForm from './signup-form';
 import { createMock } from 'storybook-addon-module-mock';
 import * as authService from '@/app/(infrastructure)/services/auth-service';
 import { waitFor, within, expect, userEvent } from '@storybook/test';
+import * as nextNavigation from '@storybook/nextjs/navigation.mock';
 
 const mockRegister = createMock(authService, 'register');
+const redirect = createMock(nextNavigation, 'redirect');
 
 const meta = {
     title: 'Components/SignUpForm',
@@ -25,6 +27,7 @@ export const Default: Story = {
     beforeEach: () => {
         // Reset the mock before each test
         mockRegister.mockClear();
+        redirect.mockClear();
     },
     args: {
         // Provide default props here if needed
@@ -51,6 +54,7 @@ export const Default: Story = {
 
         await waitFor(async () => {
             await expect(mockRegister).toHaveBeenCalled();
+            await expect(redirect).toHaveBeenCalled();
         });
     }
 };
