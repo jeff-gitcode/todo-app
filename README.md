@@ -182,7 +182,7 @@ $ npx prisma generate
 
 # shadcn
 $ npx shadcn@latest init
-$ npx shadcn@latest add button input checkbox card table form
+$ npx shadcn@latest add button input checkbox card table form alert
 $ npx shadcn@latest add dropdown-menu navigation-menu avatar
 
 # auth

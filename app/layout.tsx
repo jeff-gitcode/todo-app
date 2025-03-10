@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import getServerSession from "next-auth"
 import { Providers } from "./providers";
 import { SessionProvider } from "./session-provider";
 import NavMeu from './presentation/components/nav-menu';
-
+import ErrorBoundary from "./presentation/components/error-boundary";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,13 +32,15 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SessionProvider>
-          <Providers>
-            <div>
-              <NavMeu />
-            </div>
-            {children}</Providers>
-        </SessionProvider>
+        <ErrorBoundary>
+          <SessionProvider>
+            <Providers>
+              <div>
+                <NavMeu />
+              </div>
+              {children}</Providers>
+          </SessionProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );
