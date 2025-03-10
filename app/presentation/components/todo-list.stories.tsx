@@ -89,9 +89,7 @@ export const Default: Story = {
     const mock = getMock(parameters, actual, 'useTodos');
     mock.mockImplementation(() => ({ data: mockTodos, isLoading: false, error: null }));
     const mock2 = getMock(parameters, actual, 'useDeleteTodo');
-    mock2.mockImplementation(() => ({
-      mutate: fn()
-    }));
+    mock2.mockImplementation(() => ({ mutate: fn() }));
 
     render(parameters);
     const canvas = within(canvasElement);
