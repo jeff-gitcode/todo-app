@@ -1,9 +1,6 @@
 'use client';
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { Button } from '@/components/ui/button';
-import { Alert } from '@/components/ui/alert';
-import { Fallback } from '@radix-ui/react-avatar';
 import FallbackErrorComponent from './fallback-error-component';
 
 interface Props {

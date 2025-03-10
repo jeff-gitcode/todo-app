@@ -14,7 +14,6 @@
 // import prisma from '@prisma/client';
 import { TodoSchema } from '@/app/domain/validation/todo-schema';
 import { PrismaClient, Todo } from '@prisma/client';
-import { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 import { PrismaTodoRepository } from '../../database/prisma-todo-repository';
 import { CreateTodo } from '@/app/application/use-cases/create-todo';

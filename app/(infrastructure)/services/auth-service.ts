@@ -87,7 +87,7 @@ export const register = async (data: z.infer<typeof signUpSchema>) => {
         const lowerCaseEmail = email.toLowerCase();
 
         // Create the user
-        const user = await prisma.user.create({
+        await prisma.user.create({
             data: {
                 email: lowerCaseEmail,
                 name,

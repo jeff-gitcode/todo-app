@@ -7,13 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { SignInFormValues, signInSchema, SignUpFormValues, signUpSchema } from "@/app/presentation/validation/auth-schema";
-import { login, register } from "@/app/(infrastructure)/services/auth-service";
+import { SignUpFormValues, signUpSchema } from "@/app/presentation/validation/auth-schema";
+import { register } from "@/app/(infrastructure)/services/auth-service";
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { FormEvent } from "react";
-import { signIn } from "next-auth/react";
 
 export default function SignUpForm() {
     const form = useForm<SignUpFormValues>({

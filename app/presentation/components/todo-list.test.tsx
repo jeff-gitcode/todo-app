@@ -8,7 +8,6 @@ import { fireEvent, waitFor } from '@testing-library/dom';
 import TodoList from '@/app/presentation/components/todo-list';
 import { useTodos, useDeleteTodo } from '@/app/presentation/hooks/use-todos';
 import { useRouter } from 'next/navigation';
-import exp from 'constants';
 
 jest.mock('@/app/presentation/hooks/use-todos', () => ({
     useTodos: jest.fn(),

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { expect, userEvent, waitFor, within, screen } from '@storybook/test';
+import { expect, userEvent, waitFor, within } from '@storybook/test';
 import NavMenu from './nav-menu';
 import * as nextAuth from "next-auth/react";
 import { createMock, getMock } from 'storybook-addon-module-mock';
@@ -75,12 +75,12 @@ export const WithUser: Story = {
             },
         },
     },
-    play: async ({ canvasElement, parameters }) => {
+    play: async ({ parameters }) => {
         const mock = getMock(parameters, nextAuth, 'useSession');
         mock.mockImplementation(() => ({ data: session, status: 'authenticated' }));
         expect(mock).toBeCalled();
 
-        const canvas = within(canvasElement);
+        // const canvas = within(canvasElement);
 
         // const homeButton = canvas.getByRole('link', { name: /Home/i });
         // userEvent.click(homeButton);

@@ -40,9 +40,9 @@ describe('GET /api/todos', () => {
         (prisma.todo.findMany as jest.Mock).mockResolvedValue(mockTodos);
         (NextResponse.json as jest.Mock).mockReturnValue(mockTodos);
 
-        const { req, res } = createMocks({ method: 'GET' });
+        createMocks({ method: 'GET' });
 
-        const response = await GET();
+        await GET();
 
         expect(prisma.todo.findMany).toHaveBeenCalled();
         expect(NextResponse.json).toHaveBeenCalledWith(mockTodos);
@@ -53,9 +53,9 @@ describe('GET /api/todos', () => {
         (prisma.todo.findMany as jest.Mock).mockRejectedValue(new Error(errorMessage));
         (NextResponse.json as jest.Mock).mockReturnValue({ error: errorMessage });
 
-        const { req, res } = createMocks({ method: 'GET' });
+        createMocks({ method: 'GET' });
 
-        const response = await GET();
+        await GET();
 
         expect(prisma.todo.findMany).toHaveBeenCalled();
         expect(NextResponse.json).toHaveBeenCalledWith({ error: errorMessage }, { status: 500 });
@@ -74,7 +74,7 @@ describe('POST /api/todos', () => {
         (CreateTodo.prototype.execute as jest.Mock).mockResolvedValue(mockTodo);
         (NextResponse.json as jest.Mock).mockReturnValue(mockTodo);
 
-        const { req, res } = createMocks({ method: 'POST' });
+        const { req } = createMocks({ method: 'POST' });
         req.json = jest.fn().mockResolvedValue(mockRequestPayload);
 
         const response = await POST(req);
@@ -90,7 +90,7 @@ describe('POST /api/todos', () => {
         const validationError = { errors: [{ message: 'Title is required' }] };
         (NextResponse.json as jest.Mock).mockReturnValue({ errors: validationError });
 
-        const { req, res } = createMocks({ method: 'POST' });
+        const { req } = createMocks({ method: 'POST' });
         req.json = jest.fn().mockResolvedValue(mockRequestPayload);
 
         const response = await POST(req);

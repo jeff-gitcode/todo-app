@@ -1,4 +1,3 @@
-import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import SignUpForm from './signup-form';
 import { createMock } from 'storybook-addon-module-mock';
@@ -32,7 +31,7 @@ export const Default: Story = {
     args: {
         // Provide default props here if needed
     },
-    play: async ({ canvasElement, parameters }) => {
+    play: async ({ canvasElement }) => {
         mockRegister.mockReturnValue({ ok: true, error: null, status: 200, url: null });
 
         const canvas = within(canvasElement);

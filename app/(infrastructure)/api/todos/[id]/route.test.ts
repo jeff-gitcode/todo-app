@@ -34,7 +34,7 @@ describe('GET /api/todos/[id]', () => {
         const mockTodo = { id: 1, title: 'Test Todo', completed: false };
         (prisma.todo.findUnique as jest.Mock).mockResolvedValue(mockTodo);
 
-        const { req, res } = createMocks({ method: 'GET' });
+        const { req } = createMocks({ method: 'GET' });
         const params = { id: '1' };
 
         const response = await GET(req, { params });
@@ -47,7 +47,7 @@ describe('GET /api/todos/[id]', () => {
         const errorMessage = 'Database error';
         (prisma.todo.findUnique as jest.Mock).mockRejectedValue(new Error(errorMessage));
 
-        const { req, res } = createMocks({ method: 'GET' });
+        const { req } = createMocks({ method: 'GET' });
         const params = { id: '1' };
 
         const response = await GET(req, { params });
@@ -66,7 +66,7 @@ describe('PUT /api/todos/[id]', () => {
         const mockTodo = { id: 1, title: 'Test Todo', completed: false };
         (prisma.todo.update as jest.Mock).mockResolvedValue(mockTodo);
 
-        const { req, res } = createMocks({
+        const { req } = createMocks({
             method: 'PUT',
             body: { title: 'Updated Todo', completed: true },
         });
@@ -85,7 +85,7 @@ describe('PUT /api/todos/[id]', () => {
         const errorMessage = 'Database error';
         (prisma.todo.update as jest.Mock).mockRejectedValue(new Error(errorMessage));
 
-        const { req, res } = createMocks({
+        const { req } = createMocks({
             method: 'PUT',
             body: { title: 'Updated Todo', completed: true },
         });
@@ -107,7 +107,7 @@ describe('DELETE /api/todos/[id]', () => {
     });
 
     it('should delete a todo item successfully', async () => {
-        const { req, res } = createMocks({ method: 'DELETE' });
+        const { req } = createMocks({ method: 'DELETE' });
         const params = { id: '1' };
 
         const responnse = await DELETE(req, { params });
@@ -120,7 +120,7 @@ describe('DELETE /api/todos/[id]', () => {
         const errorMessage = 'Database error';
         (prisma.todo.delete as jest.Mock).mockRejectedValue(new Error(errorMessage));
 
-        const { req, res } = createMocks({ method: 'DELETE' });
+        const { req } = createMocks({ method: 'DELETE' });
         const params = { id: '1' };
 
         const response = await DELETE(req, { params });
@@ -139,7 +139,7 @@ describe('PATCH /api/todos/[id]', () => {
         const mockTodo = { id: 1, title: 'Test Todo', completed: false };
         (prisma.todo.update as jest.Mock).mockResolvedValue(mockTodo);
 
-        const { req, res } = createMocks({
+        const { req } = createMocks({
             method: 'PATCH',
             body: { title: 'Updated Todo', completed: true },
         });
@@ -161,7 +161,7 @@ describe('PATCH /api/todos/[id]', () => {
         const errorMessage = 'Database error';
         (prisma.todo.update as jest.Mock).mockRejectedValue(new Error(errorMessage));
 
-        const { req, res } = createMocks({
+        const { req } = createMocks({
             method: 'PATCH',
             body: { title: 'Updated Todo', completed: true },
         });

@@ -1,8 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import EditTodoPage from './page';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useTodoById } from '@/app/presentation/hooks/use-todos';
-import TodoItem from '@/app/presentation/components/todo-item';
 
 jest.mock('next/navigation', () => ({
     useRouter: jest.fn(),

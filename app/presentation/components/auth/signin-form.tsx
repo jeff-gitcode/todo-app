@@ -1,7 +1,6 @@
 'use client';
 
 // src/presentation/pages/auth/signin.tsx
-import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";

@@ -1,6 +1,6 @@
 import { act } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { fn, waitFor, within, expect, userEvent } from '@storybook/test';
+import { waitFor, within, expect, userEvent } from '@storybook/test';
 import { fireEvent } from '@testing-library/dom';
 import * as nextNavigation from '@storybook/nextjs/navigation.mock';
 import * as authService from '@/app/(infrastructure)/services/auth-service';
@@ -32,7 +32,7 @@ export const Default: Story = {
         login.mockClear();
         redirect.mockClear();
     },
-    play: async ({ canvasElement, parameters }) => {
+    play: async ({ canvasElement }) => {
         login.mockReturnValue({ ok: true, error: null, status: 200, url: null });
         const canvas = within(canvasElement);
 

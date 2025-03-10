@@ -1,6 +1,5 @@
 import { UpdateTodo } from './update-todo';
 import { ITodoRepository } from '@/app/domain/interfaces/itodo-repository';
-import { Todo } from '@/app/domain/entities/todo';
 
 // app/application/use-cases/update-todo.test.ts
 
