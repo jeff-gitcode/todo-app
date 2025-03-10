@@ -4,6 +4,11 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ![alt text](./doc/nextjs-demo.gif)
 
+## Playwright Test:
+![alt text](./doc/playwright.gif)
+
+## Storybook
+
 First, run the development server:
 
 ```bash
@@ -195,5 +200,6 @@ $ yarn create playwright
 √ Install Playwright browsers (can be done manually via 'yarn playwright install')? (Y/n) · true
 
 $ yarn add -D @playwright/test
-
+$ yarn test:playwright:report
+$ npx playwright show-report
 ```
