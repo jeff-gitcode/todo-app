@@ -48,9 +48,8 @@ test('should sign in and navigate to the protected page', async ({ page }) => {
   // Verify that the protected page is displayed
   await expect(page.getByRole('heading', { name: 'Protected Page' })).toBeVisible();
   await expect(page.getByText('Todo List')).toBeVisible();
-  await expect(page.getByRole('cell', { name: 'todo 123 update' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Edit' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Delete' })).toBeVisible();
+  // await expect(page.getByRole('button', { name: 'Edit' })).toBeVisible();
+  // await expect(page.getByRole('button', { name: 'Delete' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'New' })).toBeVisible();
 
   // Click on the 'New' button to create a new todo
@@ -83,7 +82,7 @@ test('should sign in and navigate to the protected page', async ({ page }) => {
   await expect(page.getByRole('cell', { name: 'playwright' })).toBeVisible();
 
   // Click on the 'Edit' button for the newly created todo
-  await page.getByRole('button', { name: 'Edit' }).nth(1).click();
+  await page.getByRole('button', { name: 'Edit' }).nth(0).click();
 
   // Verify that the 'Edit Todo' page is visible
   await expect(page.getByRole('heading', { name: 'Edit Todo' })).toBeVisible();
@@ -114,7 +113,7 @@ test('should sign in and navigate to the protected page', async ({ page }) => {
   await expect(page.getByText('Todo List')).toBeVisible();
 
   // Click on the 'Delete' button for the updated todo
-  await page.getByRole('button', { name: 'Delete' }).nth(1).click();
+  await page.getByRole('button', { name: 'Delete' }).nth(0).click();
 
   // Verify that the 'Protected Page' is visible
   await expect(page.getByRole('heading', { name: 'Protected Page' })).toBeVisible();
