@@ -80,7 +80,7 @@ export const Default: Story = {
 
         const mock2 = createMock(actual, 'useDeleteTodo');
         mock2.mockImplementation(useDeleteTodo);
-        
+
         return [mock, mock2];
       },
     },
@@ -90,13 +90,7 @@ export const Default: Story = {
     mock.mockImplementation(() => ({ data: mockTodos, isLoading: false, error: null }));
     const mock2 = getMock(parameters, actual, 'useDeleteTodo');
     mock2.mockImplementation(() => ({
-      mutate: fn(),
-      data: undefined,
-      error: null,
-      variables: undefined,
-      isError: false,
-      isLoading: false,
-      isSuccess: false,
+      mutate: fn()
     }));
 
     render(parameters);

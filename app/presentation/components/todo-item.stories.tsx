@@ -23,14 +23,20 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Create: Story = {
+    beforeEach: () => {
+        // Reset the mock before each test
+        // useCreateTodo.mockClear();
+        // useUpdateTodo.mockClear();
+    },
     args: {
         todo: undefined,
+        onSuccess: fn(),
     },
     parameters: {
         nextjs: {
             appDirectory: true,
         },
-        moduleMocks: {
+        moduleMock: {
             mock: () => {
                 const useCreateTodo = actual.useCreateTodo;
                 const useUpdateTodo = actual.useUpdateTodo;
@@ -48,28 +54,12 @@ export const Create: Story = {
     play: async ({ canvasElement, parameters }) => {
         const mockUseCreateTodo = getMock(parameters, actual, 'useCreateTodo');
         mockUseCreateTodo.mockImplementation(() => ({
-            mutate: fn() as UseMutateFunction<any, Error, { title: string; completed?: boolean | undefined; }, unknown>,
-            data: undefined,
-            error: null,
-            variables: undefined,
-            isError: false,
-            isIdle: true,
-            isLoading: false,
-            isPaused: false,
-            isSuccess: false,
+            mutate: fn()
         }));
 
         const mockUseUpdateTodo = getMock(parameters, actual, 'useUpdateTodo');
         mockUseUpdateTodo.mockImplementation(() => ({
-            mutate: fn() as UseMutateFunction<any, Error, { title: string; completed?: boolean | undefined; }, unknown>,
-            data: undefined,
-            error: null,
-            variables: undefined,
-            isError: false,
-            isIdle: true,
-            isLoading: false,
-            isPaused: false,
-            isSuccess: false,
+            mutate: fn()
         }));
         render(parameters);
 
@@ -94,9 +84,10 @@ export const Create: Story = {
 export const Edit: Story = {
     args: {
         todo: mockTodo,
+        onSuccess: fn(),
     },
     parameters: {
-        moduleMocks: {
+        moduleMock: {
             mock: () => {
                 const useCreateTodo = actual.useCreateTodo;
                 const useUpdateTodo = actual.useUpdateTodo;
@@ -114,15 +105,7 @@ export const Edit: Story = {
     play: async ({ canvasElement, parameters }) => {
         const mockUseUpdateTodo = getMock(parameters, actual, 'useUpdateTodo');
         mockUseUpdateTodo.mockImplementation(() => ({
-            mutate: fn() as UseMutateFunction<any, Error, { title: string; completed?: boolean | undefined; }, unknown>,
-            data: undefined,
-            error: null,
-            variables: undefined,
-            isError: false,
-            isIdle: true,
-            isLoading: false,
-            isPaused: false,
-            isSuccess: false,
+            mutate: fn()
         }));
 
 
