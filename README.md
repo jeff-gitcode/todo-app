@@ -193,6 +193,8 @@ $ yarn add @next-auth/prisma-adapter
 # storybook
 $ npx sb init
 $ yarn storybook
+$ yarn add -D @storybook/test-runner
+$ yarn test:storybook
 
 # playwright
 $ yarn create playwright

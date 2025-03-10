@@ -1,14 +1,15 @@
-import React, { act } from 'react';
+import { act } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import SignInForm from './signin-form';
-import { createMock, getMock } from 'storybook-addon-module-mock';
 import { fn, waitFor, within, expect, userEvent } from '@storybook/test';
 import { fireEvent } from '@testing-library/dom';
 import * as nextAuthReact from 'next-auth/react';
 import * as nextNavigation from '@storybook/nextjs/navigation.mock';
-import { ok } from 'assert';
+import * as authService from '@/app/(infrastructure)/services/auth-service';
 
-const signIn = fn(nextAuthReact.signIn).mockName('signIn');
+import SignInForm from './signin-form';
+import { createMock } from 'storybook-addon-module-mock';
+
+const login = createMock(authService, 'login');
 const redirect = fn(nextNavigation.redirect).mockName('redirect');
 
 const meta = {
@@ -28,15 +29,13 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     beforeEach: () => {
         // Reset the mock before each test
-        signIn.mockClear();
+        login.mockClear();
         redirect.mockClear();
     },
     play: async ({ canvasElement, parameters }) => {
-        signIn.mockResolvedValue({ ok: true, error: null, status: 200, url: null });
-        redirect.mockReturnValue({ url: '/' });
+        login.mockReturnValue({ ok: true, error: null, status: 200, url: null });
+        // redirect.mockReturnValue({ url: '/' });
         const canvas = within(canvasElement);
-
-
 
         const emailInput = canvas.getByLabelText(/email/i);
         const passwordInput = canvas.getByLabelText(/password/i);
@@ -54,9 +53,8 @@ export const Default: Story = {
         });
 
         await waitFor(async () => {
-            await expect(signIn).toHaveBeenCalled();
+            await expect(login).toHaveBeenCalled();
             await expect(redirect).toHaveBeenCalled();
-            await expect(signIn).toHaveBeenCalled();
         });
     },
     args: {

@@ -1,12 +1,9 @@
-import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { expect, userEvent, waitFor, within, screen } from '@storybook/test';
-import { SessionProvider } from '../../session-provider';
-import { Providers } from '../../providers';
 import NavMenu from './nav-menu';
 import * as nextAuth from "next-auth/react";
-import { createMock, getMock, render } from 'storybook-addon-module-mock';
+import { createMock, getMock } from 'storybook-addon-module-mock';
 
 const session = {
     user: {
@@ -79,7 +76,7 @@ export const WithUser: Story = {
         expect(mock).toBeCalled();
 
         const canvas = within(canvasElement);
-        const homeButton = screen.getByRole('link', { name: /Home/i });
+        const homeButton = canvas.getByRole('link', { name: /Home/i });
         userEvent.click(homeButton);
         await waitFor(() => expect(routerPush).toBeCalledTimes(1));
 

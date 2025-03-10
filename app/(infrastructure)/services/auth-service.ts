@@ -1,4 +1,4 @@
-"use server";
+"use client";
 
 import { AuthError } from 'next-auth';
 import { z } from 'zod';
@@ -8,7 +8,7 @@ import { signIn, signOut } from 'next-auth/react';
 import { signUpSchema } from '@/app/presentation/validation/auth-schema';
 import { prisma } from '@/app/(infrastructure)/database/prisma';
 
-type CredentialsType = {
+export type CredentialsType = {
     email: string;
     password: string;
 };

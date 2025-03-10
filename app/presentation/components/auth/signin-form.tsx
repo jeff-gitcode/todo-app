@@ -13,6 +13,7 @@ import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { FormEvent } from "react";
+import { login } from "@/app/(infrastructure)/services/auth-service";
 
 export default function SignInForm() {
     const form = useForm<SignInFormValues>({
@@ -32,13 +33,13 @@ export default function SignInForm() {
         // });
 
         try {
-            const result = await signIn("credentials", {
-                email: data.email,
-                password: data.password,
-                redirect: false,
-            });
+            // const result = await signIn("credentials", {
+            //     email: data.email,
+            //     password: data.password,
+            //     redirect: false,
+            // });
 
-            // const result = await login({ email: data.email, password: data.password }, "/");
+            const result = await login({ email: data.email, password: data.password }, "/");
 
             if (result?.error) {
                 console.log("************************SignInForm***********************");
@@ -78,10 +79,10 @@ export default function SignInForm() {
                 throw error;
             }
         }
-        // finally {
-        //     console.log("************************SignInForm Finally***********************");
-        //     redirect("/");
-        // }
+        finally {
+            console.log("************************SignInForm Finally***********************");
+            redirect("/");
+        }
 
 
         // if (result) {
