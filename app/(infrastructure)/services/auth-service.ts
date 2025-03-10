@@ -1,11 +1,12 @@
 "use server";
 
-import { signUpSchema } from '@/app/presentation/validation/auth-schema';
 import { AuthError } from 'next-auth';
 import { z } from 'zod';
-import { prisma } from '@/app/(infrastructure)/database/prisma';
 import bcrypt from 'bcryptjs';
 import { signIn, signOut } from 'next-auth/react';
+
+import { signUpSchema } from '@/app/presentation/validation/auth-schema';
+import { prisma } from '@/app/(infrastructure)/database/prisma';
 
 type CredentialsType = {
     email: string;

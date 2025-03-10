@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { SignInFormValues, signInSchema } from "@/app/presentation/validation/auth-schema";
-import { login } from "@/app/(infrastructure)/services/auth-service";
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
