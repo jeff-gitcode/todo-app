@@ -1,4 +1,4 @@
-import React, { act } from 'react';
+import { act } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { fn, waitFor, within, expect } from '@storybook/test';
 import { UseMutateFunction } from '@tanstack/react-query';

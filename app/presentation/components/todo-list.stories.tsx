@@ -1,10 +1,9 @@
-import React, { act } from 'react';
+import { act } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import TodoList from './todo-list';
 import { fn, waitFor, within, expect } from '@storybook/test';
 import * as actual from '../hooks/use-todos';
 import { createMock, getMock, render } from 'storybook-addon-module-mock';
-import { redirect, getRouter } from '@storybook/nextjs/navigation.mock';
 
 const routerPush = fn();
 
