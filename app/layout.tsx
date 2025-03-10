@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "./providers";
 import { SessionProvider } from "./session-provider";
 import NavMeu from './presentation/components/nav-menu';
-import ErrorBoundary from "./presentation/components/error-boundary";
+import ErrorBoundary from "./presentation/components/error/error-boundary";
 import "./globals.css";
 
 const geistSans = Geist({

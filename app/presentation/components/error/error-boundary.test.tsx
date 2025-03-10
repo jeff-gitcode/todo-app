@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom'; // Correct import for jest-dom
 import ErrorBoundary from './error-boundary';
 
 const ErrorComponent = () => {
@@ -16,6 +16,7 @@ describe('ErrorBoundary', () => {
     );
 
     expect(screen.getByText('Oops, there is an error!')).toBeInTheDocument();
+    expect(screen.getByText('This is a test error')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /reload/i })).toBeInTheDocument();
   });
 

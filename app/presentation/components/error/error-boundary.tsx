@@ -3,6 +3,8 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Alert } from '@/components/ui/alert';
+import { Fallback } from '@radix-ui/react-avatar';
+import FallbackErrorComponent from './fallback-error-component';
 
 interface Props {
     children: ReactNode;
@@ -10,6 +12,7 @@ interface Props {
 
 interface State {
     hasError: boolean;
+    error: Error | null;
 }
 
 class ErrorBoundary extends Component<Props, State> {
@@ -17,17 +20,19 @@ class ErrorBoundary extends Component<Props, State> {
         super(props);
 
         // Define a state variable to track whether is an error or not
-        this.state = { hasError: false };
+        this.state = { hasError: false, error: null };
     }
 
     static getDerivedStateFromError(error: Error): State {
         // Update state so the next render will show the fallback UI
-        return { hasError: true };
+        return { hasError: true, error };
     }
 
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         // You can use your own error logging service here
         console.log({ error, errorInfo });
+        // Send error to Sentry
+        // Sentry.captureException(error);  
     }
 
     render() {
@@ -35,10 +40,7 @@ class ErrorBoundary extends Component<Props, State> {
         if (this.state.hasError) {
             // You can render any custom fallback UI
             return (
-                <Alert type="error">
-                    <h2>Oops, there is an error!</h2>
-                    <Button onClick={() => window.location.reload()}>Reload</Button>
-                </Alert>
+                <FallbackErrorComponent error={this.state.error} />
             );
         }
 
