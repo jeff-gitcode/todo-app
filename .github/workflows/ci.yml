@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  Todo-App-CI:
+  Todo-App-NextJS-CI:
     # runs-on: windows-latest
     # strategy:
     #   matrix:
