@@ -62,11 +62,13 @@ export const Create: Story = {
             failureReason: null,
             status: 'idle',
             mutate: fn(),
+            mutateAsync: fn(),
             isError: false,
-            isSuccess: true,
+            isSuccess: false,
             isPaused: false,
             isPending: false,
-            isIdle: false,
+            isIdle: true,
+            reset: fn(),
         }));
 
         const mockUseUpdateTodo = getMock(parameters, actual, 'useUpdateTodo');
@@ -80,11 +82,13 @@ export const Create: Story = {
             failureReason: null,
             status: 'idle',
             mutate: fn(),
+            mutateAsync: fn(),
             isError: false,
-            isSuccess: true,
+            isSuccess: false,
             isPaused: false,
             isPending: false,
-            isIdle: false,
+            isIdle: true,
+            reset: fn(),
         }));
 
         render(parameters);
@@ -130,10 +134,44 @@ export const Edit: Story = {
     },
     play: async ({ canvasElement, parameters }) => {
         const mockUseCreateTodo = getMock(parameters, actual, 'useCreateTodo');
-        mockUseCreateTodo.mockImplementation(() => ({ mutate: fn() }));
+        mockUseCreateTodo.mockImplementation(() => ({
+            context: undefined,
+            data: undefined,
+            error: null,
+            variables: undefined,
+            submittedAt: 0,
+            failureCount: 0,
+            failureReason: null,
+            status: 'idle',
+            mutate: fn(),
+            mutateAsync: fn(),
+            isError: false,
+            isSuccess: false,
+            isPaused: false,
+            isPending: false,
+            isIdle: true,
+            reset: fn(),
+        }));
 
         const mockUseUpdateTodo = getMock(parameters, actual, 'useUpdateTodo');
-        mockUseUpdateTodo.mockImplementation(() => ({ mutate: fn() }));
+        mockUseUpdateTodo.mockImplementation(() => ({
+            context: undefined,
+            data: undefined,
+            error: null,
+            variables: undefined,
+            submittedAt: 0,
+            failureCount: 0,
+            failureReason: null,
+            status: 'idle',
+            mutate: fn(),
+            mutateAsync: fn(),
+            isError: false,
+            isSuccess: false,
+            isPaused: false,
+            isPending: false,
+            isIdle: true,
+            reset: fn(),
+        }));
 
         render(parameters);
         const canvas = within(canvasElement);

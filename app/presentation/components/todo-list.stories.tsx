@@ -87,9 +87,54 @@ export const Default: Story = {
   },
   play: async ({ canvasElement, parameters }) => {
     const mock = getMock(parameters, actual, 'useTodos');
-    mock.mockImplementation(() => ({ data: mockTodos, isLoading: false, error: null }));
+    mock.mockImplementation(() => ({
+      data: mockTodos,
+      isLoading: false,
+      error: null,
+      isError: false,
+      isPending: false,
+      isLoadingError: false,
+      isRefetchError: false,
+      isSuccess: true,
+      isFetched: true,
+      isFetchedAfterMount: true,
+      isFetching: false,
+      isRefetching: false,
+      isStale: false,
+      refetch: fn(),
+      remove: fn(),
+      isPlaceholderData: false,
+      status: 'success',
+      dataUpdatedAt: Date.now(),
+      errorUpdatedAt: Date.now(),
+      failureCount: 0,
+      failureReason: null,
+      errorUpdateCount: 0,
+      isInitialLoading: false,
+      isPaused: false,
+      fetchStatus: 'idle',
+      promise: Promise.resolve(mockTodos),
+    }));
+
     const mock2 = getMock(parameters, actual, 'useDeleteTodo');
-    mock2.mockImplementation(() => ({ mutate: fn() }));
+    mock2.mockImplementation(() => ({
+      context: undefined,
+      data: undefined,
+      error: null,
+      variables: undefined,
+      submittedAt: 0,
+      failureCount: 0,
+      failureReason: null,
+      status: 'idle',
+      mutate: fn(),
+      mutateAsync: fn(),
+      isError: false,
+      isSuccess: false,
+      isPaused: false,
+      isPending: false,
+      isIdle: true,
+      reset: fn(),
+    }));
 
     render(parameters);
     const canvas = within(canvasElement);

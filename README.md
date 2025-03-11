@@ -206,6 +206,8 @@ $ yarn add -D @playwright/test
 $ yarn test:playwright:report
 $ npx playwright show-report
 
-# github action
+# eslint
+$ yarn add eslint-plugin-storybook --dev
 
+# github action
 ```

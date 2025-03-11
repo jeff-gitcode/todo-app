@@ -17,6 +17,7 @@ const session = {
         role: 'user',
         expires: '2022-01-01T00:00:00.000Z',
     },
+    expires: '2022-01-01T00:00:00.000Z',
 }
 
 const redirect = createMock(nextNavigation, 'redirect');
@@ -77,7 +78,11 @@ export const WithUser: Story = {
     },
     play: async ({ parameters }) => {
         const mock = getMock(parameters, nextAuth, 'useSession');
-        mock.mockImplementation(() => ({ data: session, status: 'authenticated' }));
+        mock.mockImplementation(() => ({
+            update: fn(),
+            data: session,
+            status: 'authenticated'
+        }));
         expect(mock).toBeCalled();
 
         // const canvas = within(canvasElement);
@@ -89,6 +94,11 @@ export const WithUser: Story = {
 };
 
 export const WithoutUser: Story = {
+    beforeEach: () => {
+        // Reset the mock before each test
+        fn().mockClear();
+        redirect.mockClear();
+    },
     args: {
         // Provide props to simulate a logged-out user
     },
@@ -110,7 +120,14 @@ export const WithoutUser: Story = {
     },
     play: async ({ canvasElement, parameters }) => {
         const mock = getMock(parameters, nextAuth, 'useSession');
-        mock.mockImplementation(() => ({ data: {}, status: 'unauthenticated' }));
+        mock.mockImplementation(() => ({
+            update: fn(),
+            data: {
+                user: undefined,
+                expires: '',
+            },
+            status: 'authenticated'
+        }));
         expect(mock).toBeCalled();
 
         const canvas = within(canvasElement);
