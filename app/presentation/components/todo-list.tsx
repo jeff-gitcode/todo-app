@@ -1,15 +1,22 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import React from 'react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import React from "react";
 
-import { Todo } from '@/app/domain/entities/todo';
-import { useTodos, useDeleteTodo } from '../hooks/use-todos';
-import { useRouter } from 'next/navigation';
+import { Todo } from "@/app/domain/entities/todo";
+import { useTodos, useDeleteTodo } from "../hooks/use-todos";
+import { useRouter } from "next/navigation";
 
 const TodoList = () => {
   const router = useRouter();
@@ -20,7 +27,7 @@ const TodoList = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   const handleSuccess = () => {
-    router.push('/'); // Redirect to the home page after successful update
+    router.push("/"); // Redirect to the home page after successful update
   };
 
   return (
@@ -44,7 +51,10 @@ const TodoList = () => {
               <TableRow key={todo.id}>
                 <TableCell>{todo.title}</TableCell>
                 <TableCell>
-                  <Link href={`/presentation/pages/protected/todos/${todo.id}`} passHref>
+                  <Link
+                    href={`/presentation/pages/protected/todos/${todo.id}`}
+                    passHref
+                  >
                     <Button variant="ghost" size="sm">
                       Edit
                       {/* <Pencil className="h-4 w-4" /> */}
@@ -53,7 +63,9 @@ const TodoList = () => {
                   <Button
                     variant="destructive"
                     size="sm"
-                    onClick={() => deleteTodo(todo.id, { onSuccess: handleSuccess })}
+                    onClick={() =>
+                      deleteTodo(todo.id, { onSuccess: handleSuccess })
+                    }
                   >
                     Delete
                   </Button>

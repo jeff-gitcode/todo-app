@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "./providers";
 import { SessionProvider } from "./session-provider";
-import NavMeu from './presentation/components/nav-menu';
+import NavMeu from "./presentation/components/nav-menu";
 import ErrorBoundary from "./presentation/components/error/error-boundary";
 import "./globals.css";
 
@@ -26,7 +26,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <body
@@ -38,7 +37,8 @@ export default async function RootLayout({
               <div>
                 <NavMeu />
               </div>
-              {children}</Providers>
+              {children}
+            </Providers>
           </SessionProvider>
         </ErrorBoundary>
       </body>

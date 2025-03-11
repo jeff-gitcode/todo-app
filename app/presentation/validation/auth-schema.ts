@@ -1,20 +1,24 @@
 import { z } from "zod";
 
 // Sign-up schema
-export const signUpSchema = z.object({
+export const signUpSchema = z
+  .object({
     name: z.string().min(1, "Name is required"),
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
-    passwordConfirmation: z.string().min(6, "Password must be at least 6 characters long"),
-}).refine(data => data.passwordConfirmation === data.password, {
+    passwordConfirmation: z
+      .string()
+      .min(6, "Password must be at least 6 characters long"),
+  })
+  .refine((data) => data.passwordConfirmation === data.password, {
     message: "Passwords do not match",
     path: ["passwordConfirmation"],
-});
+  });
 
 // Sign-in schema
 export const signInSchema = z.object({
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(1, "Password is required"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
 });
 
 // Infer types from schemas

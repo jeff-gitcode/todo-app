@@ -1,28 +1,32 @@
-import { useCurrentSession } from './auth-session';
-import { auth } from '@/auth';
+import { useCurrentSession } from "./auth-session";
+import { auth } from "@/auth";
 
-jest.mock('@/auth', () => ({
-    auth: jest.fn(),
+jest.mock("@/auth", () => ({
+  auth: jest.fn(),
 }));
 
-describe('useCurrentSession', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
+describe("useCurrentSession", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    it('returns the current session', async () => {
-        const mockSession = { user: { name: 'Test User', email: 'test@example.com' } };
-        (auth as jest.Mock).mockResolvedValue(mockSession);
+  it("returns the current session", async () => {
+    const mockSession = {
+      user: { name: "Test User", email: "test@example.com" },
+    };
+    (auth as jest.Mock).mockResolvedValue(mockSession);
 
-        const session = await useCurrentSession();
+    const session = await useCurrentSession();
 
-        expect(auth).toHaveBeenCalled();
-        expect(session).toEqual(mockSession);
-    });
+    expect(auth).toHaveBeenCalled();
+    expect(session).toEqual(mockSession);
+  });
 
-    it('handles errors when fetching the session', async () => {
-        (auth as jest.Mock).mockRejectedValue(new Error('Failed to fetch session'));
+  it("handles errors when fetching the session", async () => {
+    (auth as jest.Mock).mockRejectedValue(new Error("Failed to fetch session"));
 
-        await expect(useCurrentSession()).rejects.toThrow('Failed to fetch session');
-    });
+    await expect(useCurrentSession()).rejects.toThrow(
+      "Failed to fetch session",
+    );
+  });
 });

@@ -1,10 +1,8 @@
-import TodoList from '@/app/presentation/components/todo-list'
-import React from 'react'
+import TodoList from "@/app/presentation/components/todo-list";
+import React from "react";
 
 const TodoPage = () => {
-    return (
-        <TodoList />
-    )
-}
+  return <TodoList />;
+};
 
-export default TodoPage
+export default TodoPage;

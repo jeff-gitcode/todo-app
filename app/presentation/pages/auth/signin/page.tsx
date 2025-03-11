@@ -1,14 +1,12 @@
-'use client';
+"use client";
 
-import SignInForm from '@/app/presentation/components/auth/signin-form';
+import SignInForm from "@/app/presentation/components/auth/signin-form";
 // src/presentation/pages/auth/signin.tsx
 
-import React from 'react'
+import React from "react";
 
 const SignInPage = () => {
-    return (
-        <SignInForm />
-    )
-}
+  return <SignInForm />;
+};
 
-export default SignInPage
+export default SignInPage;

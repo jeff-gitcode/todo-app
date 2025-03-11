@@ -1,10 +1,12 @@
-import { ITodoRepository } from '@/app/domain/interfaces/itodo-repository';
-import { Todo } from '@/app/domain/entities/todo';
+import { ITodoRepository } from "@/app/domain/interfaces/itodo-repository";
+import { Todo } from "@/app/domain/entities/todo";
 
 export class CreateTodo {
-    constructor(private todoRepository: ITodoRepository) { }
+  constructor(private todoRepository: ITodoRepository) {}
 
-    async execute(todo: Omit<Todo, 'id' | 'createdAt' | 'updatedAt'>): Promise<Todo> {
-        return this.todoRepository.createTodo(todo);
-    }
+  async execute(
+    todo: Omit<Todo, "id" | "createdAt" | "updatedAt">,
+  ): Promise<Todo> {
+    return this.todoRepository.createTodo(todo);
+  }
 }

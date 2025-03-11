@@ -1,25 +1,43 @@
-import { act } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
-import TodoList from './todo-list';
-import { fn, waitFor, within, expect } from '@storybook/test';
-import * as actual from '../hooks/use-todos';
-import { createMock, getMock, render } from 'storybook-addon-module-mock';
+import { act } from "react";
+import { Meta, StoryObj } from "@storybook/react";
+import TodoList from "./todo-list";
+import { fn, waitFor, within, expect } from "@storybook/test";
+import * as actual from "../hooks/use-todos";
+import { createMock, getMock, render } from "storybook-addon-module-mock";
 
 const routerPush = fn();
 
 const mockTodos = [
-  { id: 1, title: 'Todo 1', completed: false, createdAt: new Date(), updatedAt: new Date() },
-  { id: 2, title: 'Todo 2', completed: false, createdAt: new Date(), updatedAt: new Date() },
-  { id: 3, title: 'Todo 3', completed: false, createdAt: new Date(), updatedAt: new Date() },
+  {
+    id: 1,
+    title: "Todo 1",
+    completed: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 2,
+    title: "Todo 2",
+    completed: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 3,
+    title: "Todo 3",
+    completed: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
 ];
 
 // const useTodos = fn(actual.useTodos).mockName('useTodos');
 // const useDeleteTodo = fn(actual.useDeleteTodo).mockName('useDeleteTodo');
 
 const meta = {
-  title: 'Components/TodoList',
+  title: "Components/TodoList",
   component: TodoList,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
     controls: { expanded: true },
     nextjs: {
@@ -34,10 +52,9 @@ const meta = {
       //   getRouter: fn(),
       // },
     },
-    jest: ['todo-list.test.tsx'],
+    jest: ["todo-list.test.tsx"],
   },
-} satisfies Meta<typeof TodoList>;;
-
+} satisfies Meta<typeof TodoList>;
 
 export default meta;
 
@@ -48,7 +65,6 @@ export const Default: Story = {
     // Reset the mock before each test
     // useTodos.mockClear();
     // useDeleteTodo.mockClear();
-
     // useTodos.mockReturnValue({ data: mockTodos, isLoading: false, error: null });
     // useDeleteTodo.mockReturnValue({
     //   mutate: fn(),
@@ -75,10 +91,10 @@ export const Default: Story = {
         const useTodos = actual.useTodos;
         const useDeleteTodo = actual.useDeleteTodo;
 
-        const mock = createMock(actual, 'useTodos');
+        const mock = createMock(actual, "useTodos");
         mock.mockImplementation(useTodos);
 
-        const mock2 = createMock(actual, 'useDeleteTodo');
+        const mock2 = createMock(actual, "useDeleteTodo");
         mock2.mockImplementation(useDeleteTodo);
 
         return [mock, mock2];
@@ -86,7 +102,7 @@ export const Default: Story = {
     },
   },
   play: async ({ canvasElement, parameters }) => {
-    const mock = getMock(parameters, actual, 'useTodos');
+    const mock = getMock(parameters, actual, "useTodos");
     mock.mockImplementation(() => ({
       data: mockTodos,
       isLoading: false,
@@ -104,7 +120,7 @@ export const Default: Story = {
       refetch: fn(),
       remove: fn(),
       isPlaceholderData: false,
-      status: 'success',
+      status: "success",
       dataUpdatedAt: Date.now(),
       errorUpdatedAt: Date.now(),
       failureCount: 0,
@@ -112,11 +128,11 @@ export const Default: Story = {
       errorUpdateCount: 0,
       isInitialLoading: false,
       isPaused: false,
-      fetchStatus: 'idle',
+      fetchStatus: "idle",
       promise: Promise.resolve(mockTodos),
     }));
 
-    const mock2 = getMock(parameters, actual, 'useDeleteTodo');
+    const mock2 = getMock(parameters, actual, "useDeleteTodo");
     mock2.mockImplementation(() => ({
       context: undefined,
       data: undefined,
@@ -125,7 +141,7 @@ export const Default: Story = {
       submittedAt: 0,
       failureCount: 0,
       failureReason: null,
-      status: 'idle',
+      status: "idle",
       mutate: fn(),
       mutateAsync: fn(),
       isError: false,
@@ -144,8 +160,7 @@ export const Default: Story = {
       expect(mock2).toBeCalled();
     });
 
-    const deleteButton = canvas.getAllByRole('button', { name: /Delete/i })[0];
-
+    const deleteButton = canvas.getAllByRole("button", { name: /Delete/i })[0];
 
     // for (let i = 0; i < 1; i++) {
     //   const deleteButton = canvas.getAllByRole('button', { name: /Delete/i })

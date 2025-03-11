@@ -1,20 +1,20 @@
-import nextJest from 'next/jest.js';
+import nextJest from "next/jest.js";
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
-  dir: './',
+  dir: "./",
 });
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
   },
-  testEnvironment: 'jsdom',
+  testEnvironment: "jsdom",
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/$1',
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    "^@/(.*)$": "<rootDir>/$1",
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy",
   },
   testTimeout: 20000,
   modulePathIgnorePatterns: ["spec.js", "spec.ts", "spec.tsx"],

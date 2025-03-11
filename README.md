@@ -5,6 +5,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ![alt text](./doc/nextjs-demo.gif)
 
 ## Playwright Test:
+
 ![alt text](./doc/playwright.gif)
 
 ## Storybook
@@ -42,8 +43,8 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-
 # Tech Stack
+
 - [x] clean architecture
 - [x] nextjs
 - [x] zod
@@ -100,7 +101,7 @@ nextjs-todo-app/
 $ npx create-next-app@latest todo-app with-jest with-playwright --typescript
 $ npm install -g npm@11.0.0
 $ yarn add @tanstack/react-query @tanstack/react-query-devtools zod react-hook-form next-auth @prisma/client @storybook/react @testing-library/react @testing-library/jest-dom jest playwright shadcn-ui
-$ yarn add -D prisma   
+$ yarn add -D prisma
 $ npx prisma init
 
 ✔ Your Prisma schema was created at prisma/schema.prisma
@@ -120,7 +121,7 @@ https://pris.ly/d/getting-started
 
 # JEST
 $ yarn add -D @types/jest
-$ yarn add -D  jest ts-jest @types/jest @prisma/client  
+$ yarn add -D  jest ts-jest @types/jest @prisma/client
 $ yarn add --dev @testing-library/jest-dom
 $ yarn create jest@latest
 $ yarn add -D jest jest-environment-jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom ts-node
@@ -211,3 +212,4 @@ $ yarn add eslint-plugin-storybook --dev
 
 # github action
 ```
+````
