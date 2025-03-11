@@ -22,7 +22,7 @@ export async function login({ email, password }: CredentialsType, callbackUrl: s
         console.log("************************Login function***********************");
         console.log(result);
 
-        return { ok: true };
+        return { ok: true, error: undefined };
         // console.log("************************Login function***********************");
         // console.log(result);
         // return result;

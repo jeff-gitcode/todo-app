@@ -33,7 +33,7 @@ export const Default: Story = {
         redirect.mockClear();
     },
     play: async ({ canvasElement }) => {
-        login.mockReturnValue({ ok: true, error: null, status: 200, url: null });
+        login.mockImplementation(() => Promise.resolve({ ok: true, error: undefined }));
         const canvas = within(canvasElement);
 
         const emailInput = canvas.getByLabelText(/email/i);

@@ -32,7 +32,7 @@ export const Default: Story = {
         // Provide default props here if needed
     },
     play: async ({ canvasElement }) => {
-        mockRegister.mockReturnValue({ ok: true, error: null, status: 200, url: null });
+        mockRegister.mockImplementation(() => Promise.resolve({ error: '', success: undefined }));
 
         const canvas = within(canvasElement);
 

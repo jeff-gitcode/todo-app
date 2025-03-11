@@ -1,3 +1,5 @@
+'use client';
+
 import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import React from 'react';
@@ -8,7 +10,7 @@ function ClientComponent() {
     }
 
     return <div>
-        <Alert type="info">
+        <Alert variant='destructive' >
             <p>Client Component Content</p>
         </Alert>
         <Button>Click Me</Button></div>;

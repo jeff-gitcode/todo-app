@@ -25,7 +25,7 @@ const prisma = new PrismaClient();
 
 // update todo
 export async function PUT(req: Request,
-    { params, body }: { params: { id: string }, body: { title: string, completed: boolean } }): Promise<Response> {
+    { params, body }: { params: Promise<{ id: string }>, body: { title: string, completed: boolean } }): Promise<Response> {
     try {
         console.log(body);
         const { id } = await params;
@@ -43,7 +43,7 @@ export async function PUT(req: Request,
 
 // update todo by id with PATCH
 export async function PATCH(req: Request,
-    { params }: { params: { id: string } }): Promise<Response> {
+    { params }: { params: Promise<{ id: string }> }): Promise<Response> {
     try {
         const payload = await req.json();
 
@@ -62,7 +62,7 @@ export async function PATCH(req: Request,
 
 // fetch todo by id
 export async function GET(req: Request,
-    { params }: { params: { id: string } }): Promise<Response> {
+    { params }: { params: Promise<{ id: string }> }): Promise<Response> {
     try {
         const { id } = await params;
         const todo = await prisma.todo.findUnique({
@@ -77,7 +77,7 @@ export async function GET(req: Request,
 
 // Delete a todo by ID
 export async function DELETE(req: Request,
-    { params }: { params: { id: string } }): Promise<Response> {
+    { params }: { params: Promise<{ id: string }> }): Promise<Response> {
     try {
         const { id } = await params;
         await prisma.todo.delete({
