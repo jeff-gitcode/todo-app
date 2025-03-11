@@ -40,7 +40,8 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy public assets from the builder stage
-COPY --from=builder /app/public ./
+COPY --from=builder --chown=nextjs:nodejs /app/public ./
+COPY --from=builder --link /app/public ./public
 
 # Copy the standalone build output and set ownership to nextjs user and nodejs group
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./

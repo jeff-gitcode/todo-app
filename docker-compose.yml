@@ -1,11 +1,14 @@
 services:
-  web:
+  todo-app:
     build:
-      context: ./
+      context: .
+      dockerfile: Dockerfile
       target: runner
     volumes:
-      - .:/app:delegated
+      - .:/app
       - sqlite_data:/app/prisma
+      - ./next-app/src:/app/src
+      - ./next-app/public:/app/public
     command: npm run dev
     ports:
       - "3000:3000"
