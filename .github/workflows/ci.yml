@@ -24,9 +24,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Format code
-        run: yarn format:fix
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -47,6 +44,9 @@ jobs:
 
       - name: Run lint
         run: yarn lint
+
+      - name: Format code
+        run: yarn format:fix
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
