@@ -212,7 +212,17 @@ $ yarn add eslint-plugin-storybook --dev
 
 # github action
 
-# deployment
+# deployment on local
+$ yarn build
+# powershell command
+$ cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/
+# cmd
+$ node .next/standalone/server.js
+
+# docker
+$ docker compose up --build
+$ docker compose down
+
 
 ```
 ````

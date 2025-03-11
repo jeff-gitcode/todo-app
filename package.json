@@ -7,6 +7,8 @@
     "build": "next build",
     "build:analyze": "yarn build && source-map-explorer .next/static/**/*.js",
     "start": "next start",
+    "export": "next build && next export",
+    "start:build": "cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public && node .next/standalone/server.js",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format:fix": "prettier --write --list-different .",
