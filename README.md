@@ -123,7 +123,7 @@ https://pris.ly/d/getting-started
 $ yarn add -D @types/jest
 $ yarn add -D  jest ts-jest @types/jest @prisma/client
 $ yarn add --dev @testing-library/jest-dom
-$ yarn create jest@latest
+$ yarn create jest
 $ yarn add -D jest jest-environment-jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom ts-node
 
 # tanstack
